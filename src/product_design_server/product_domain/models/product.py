@@ -14,6 +14,7 @@ class Product(AutoTimestampedModel, UserTrackingModel):
 
     class Meta:
         db_table = 'pd_product'
+        app_label = 'product_domain'
         unique_together = [('name', 'type')]
         indexes = [
             models.Index(fields=['name', 'type']),

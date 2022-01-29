@@ -1,0 +1,1 @@
+from product_domain.models.accessories.handbag_detail import HandbagDetail
