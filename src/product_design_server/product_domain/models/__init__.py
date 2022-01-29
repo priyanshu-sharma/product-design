@@ -1,0 +1,1 @@
+from product_domain.models.product import Product

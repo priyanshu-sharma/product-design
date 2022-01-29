@@ -1,4 +1,7 @@
 Django==3.2.11
+django-celery-beat==2.2.1
+djangorestframework==3.13.1
+django-filter==21.1
 ipython==7.29.0
 ipython-genutils==0.2.0
 jedi==0.18.1
