@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_filters',
     # application modules
     'product_domain',
+    'dataset_domain',
 ]
 
 MIDDLEWARE = [
