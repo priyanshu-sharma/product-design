@@ -11,4 +11,5 @@ def get_or_create_product(name, type, metadata, description):
         'type': product.type,
         'metadata': product.metadata,
         'description': product.description,
+        'product': product,
     }
