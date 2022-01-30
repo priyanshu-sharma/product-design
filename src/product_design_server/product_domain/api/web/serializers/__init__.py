@@ -1,1 +1,3 @@
 from product_domain.api.web.serializers.handbag_detail_serializer import HandbagDetailSerializer
+from product_domain.api.web.serializers.handbag_creation_serializer import HandbagCreationSerializer
+from product_domain.api.web.serializers.product_creation_serializer import ProductCreationSerializer
