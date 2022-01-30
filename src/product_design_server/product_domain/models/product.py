@@ -19,3 +19,15 @@ class Product(AutoTimestampedModel, UserTrackingModel):
         indexes = [
             models.Index(fields=['name', 'type']),
         ]
+
+    @staticmethod
+    def get_or_create(name, type, metadata, description):
+        """
+        Get or create a product.
+        """
+        try:
+            product = Product.objects.get(name=name, type=type)
+        except Product.DoesNotExist:
+            product = Product.objects.create(name=name, type=type, metadata=metadata, description=description)
+            product.save()
+        return product

@@ -23,7 +23,7 @@ class HandbagDetailSerializer(serializers.ModelSerializer):
             'description',
             'metadata',
             'product_id',
-            'product_type'
+            'product_type',
             'product_name',
             'product_metadata',
             'product_description'
