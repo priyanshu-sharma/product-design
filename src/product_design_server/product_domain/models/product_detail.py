@@ -7,8 +7,6 @@ class ProductDetail(AutoTimestampedModel, UserTrackingModel):
     """
     ProductDetail model
     """
-
-    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     url = models.URLField(max_length=1000)
     description = models.TextField(null=True)

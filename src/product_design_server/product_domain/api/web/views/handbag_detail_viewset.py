@@ -10,6 +10,7 @@ from product_domain.api.web.filters import HandbagDetailFilter
 from product_domain.api.web.serializers import HandbagDetailSerializer, ProductCreationSerializer
 from product_domain.api.web.pagination import StandardPagination
 from product_domain.models import HandbagDetail
+from product_domain.tasks import product_creation_task
 
 class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = HandbagDetail.objects.select_related("product").all()
@@ -25,7 +26,9 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
         product_creation_serializer = ProductCreationSerializer(data=request.data)
         product_creation_serializer.is_valid(raise_exception=True)
         serialized_data = product_creation_serializer.validated_data
-        print(dict(serialized_data))
+        transaction.on_commit(
+            lambda: product_creation_task.delay(dict(serialized_data))
+        )
         return Response( 
             data ={
                 "message": "Product and Product Detail created",

@@ -1,3 +1,5 @@
+amqp==5.0.9
+celery==5.2.3
 Django==3.2.11
 django-celery-beat==2.2.1
 djangorestframework==3.13.1
@@ -7,3 +9,4 @@ ipython==7.29.0
 ipython-genutils==0.2.0
 jedi==0.18.1
 psycopg2==2.9.3
+redis==4.1.2

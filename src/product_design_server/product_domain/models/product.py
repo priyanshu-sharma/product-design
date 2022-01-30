@@ -6,7 +6,6 @@ class Product(AutoTimestampedModel, UserTrackingModel):
     """
     Product model.
     """
-    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     type = models.TextField(choices=ProductType.choices(), default=ProductType.CLOTHING)
     metadata = models.JSONField(default=dict)
