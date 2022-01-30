@@ -1,0 +1,1 @@
+from product_domain.api.web.filters.handbag_detail_filter import HandbagDetailFilter

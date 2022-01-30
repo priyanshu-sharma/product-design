@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url
+from django.conf.urls import include, url
 
 from server_config import health_check_view
+from product_domain.api.web import urls as product_domain_urls
+
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Product Design Server API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url("^health_check$", health_check_view)
+    url("^health_check$", health_check_view),
+    url('^docs/', schema_view),
+    url("^api/product_domain/v1/", include((product_domain_urls, 'product_domain'), namespace='v1_product_domain')),
 ]
