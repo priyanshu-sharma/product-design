@@ -1,1 +1,3 @@
 from product_domain.enums.product_type import ProductType
+from product_domain.enums.accessories_type import AccessoriesType
+from product_domain.enums.clothing_type import ClothingType

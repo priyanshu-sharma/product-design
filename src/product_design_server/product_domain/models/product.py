@@ -10,7 +10,7 @@ class Product(AutoTimestampedModel, UserTrackingModel):
     name = models.CharField(max_length=255)
     type = models.TextField(choices=ProductType.choices(), default=ProductType.CLOTHING)
     metadata = models.JSONField(default=dict)
-    description = models.TextField()
+    description = models.TextField(null=True)
 
     class Meta:
         db_table = 'pd_product'

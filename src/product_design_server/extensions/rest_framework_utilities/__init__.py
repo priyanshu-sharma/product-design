@@ -1,0 +1,1 @@
+from extensions.rest_framework_utilities.filters import NumberInFilter, CharInFilter
