@@ -1,5 +1,0 @@
-fastapi==0.73.0
-ipython==7.29.0
-marshmallow==3.14.1
-requests==2.27.1
-uvicorn==0.17.1

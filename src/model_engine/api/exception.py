@@ -1,6 +1,5 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from marshmallow.exceptions import ValidationError
 
 
 class NetworkException(Exception):
@@ -52,7 +51,3 @@ async def BadRequestExceptionHandler(request: Request, exception: BadRequestExce
 
 async def ParseExceptionHandler(request: Request, exception: ParseException):
     return JSONResponse(status_code=400, content={"message": "Parse Error - " + str(exception.message)})
-
-
-async def SchemaExceptionHandler(request: Request, exception: ValidationError):
-    return JSONResponse(status_code=400, content={"message": "Schema Error - " + str(exception)})
