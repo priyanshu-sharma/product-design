@@ -3,9 +3,9 @@ import logging.config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from model_engine.api.router import api_router
-from model_engine.settings import LOGGING_CONFIG_PATH
-from model_engine.api import (
+from api.router import api_router
+from settings import LOGGING_CONFIG_PATH
+from api import (
     NetworkException,
     NetworkExceptionHandler,
     ResourceConflictException,
@@ -19,8 +19,8 @@ from model_engine.api import (
 )
 
 
-from model_engine.settings import LOGGING_CONFIG_PATH
-from model_engine.server_config.database import Base, SQLALCHEMY_DATABASE_URL
+from settings import LOGGING_CONFIG_PATH
+from server_config.database import Base, SQLALCHEMY_DATABASE_URL
 
 logging.config.fileConfig(LOGGING_CONFIG_PATH, disable_existing_loggers=False)
 

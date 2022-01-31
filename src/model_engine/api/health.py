@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter
 from starlette.responses import PlainTextResponse
-from model_engine.storage_backend import registry as storage_registry
+from storage_backend import registry as storage_registry
 from starlette.responses import Response
 
 logger = logging.getLogger(__name__)

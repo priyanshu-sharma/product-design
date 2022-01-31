@@ -1,6 +1,6 @@
 """All Routes."""
 from fastapi import APIRouter
-from model_engine.api import health 
+from api import health 
 
 api_router = APIRouter()
 
