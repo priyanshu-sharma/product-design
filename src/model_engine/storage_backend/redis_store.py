@@ -1,7 +1,7 @@
-from model_engine.storage_backend.base import BaseStorageBackend
+from storage_backend.base import BaseStorageBackend
 import redis
-from model_engine.utils import chunkify
-from model_engine.utils.singleton import Singleton
+from utils import chunkify
+from utils.singleton import Singleton
 
 
 class LayerExists(Exception):

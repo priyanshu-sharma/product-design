@@ -1,6 +1,6 @@
-from model_engine.utils.singleton import Singleton
-from model_engine.settings import storage_config
-from model_engine.storage_backend.redis_store import RedisStore
+from utils.singleton import Singleton
+from settings import storage_config
+from storage_backend.redis_store import RedisStore
 
 
 class StorageBackendRegistry(metaclass=Singleton):
