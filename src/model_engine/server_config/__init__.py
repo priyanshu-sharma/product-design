@@ -1,0 +1,1 @@
+from server_config.database import Base, SQLALCHEMY_DATABASE_URL
