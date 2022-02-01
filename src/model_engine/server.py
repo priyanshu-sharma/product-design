@@ -3,7 +3,7 @@ import logging.config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.router import api_router
+from api import api_router
 from settings import LOGGING_CONFIG_PATH
 from extensions import (
     NetworkException,
