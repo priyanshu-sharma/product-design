@@ -1,9 +1,9 @@
 """All Routes."""
 from fastapi import APIRouter
-from api import health 
+from server_config import health_router
 
 api_router = APIRouter()
 
 # Health endpoint.
-api_router.include_router(health.router, prefix="/health")
+api_router.include_router(health_router, prefix="/health")
 
