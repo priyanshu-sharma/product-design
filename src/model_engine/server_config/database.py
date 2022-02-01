@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
-from settings import database
+from server_config import database
 
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{database['host']}:{database['port']}/{database['name']}"
