@@ -20,7 +20,6 @@ from api import (
 
 
 from settings import LOGGING_CONFIG_PATH
-from server_config.database import Base, SQLALCHEMY_DATABASE_URL
 
 logging.config.fileConfig(LOGGING_CONFIG_PATH, disable_existing_loggers=False)
 
