@@ -6,7 +6,7 @@ from product_domain.models import HandbagDetail
 class HandbagDetailSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name')
     product_type = serializers.CharField(source='product.type')
-    product_metadata = serializers.JSONField(source='product.meta')
+    product_meta = serializers.JSONField(source='product.meta')
     product_description = serializers.CharField(source='product.description')
 
     class Meta:
