@@ -1,5 +1,5 @@
 from celery import Celery
-from model_engine.server_config.settings import celery_config
+from server_config import celery_config
 
 
 

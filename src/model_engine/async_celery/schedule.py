@@ -1,5 +1,5 @@
 from celery.schedules import crontab
-from model_engine.celery.app import app
+from async_celery import app
 
 
 @app.on_after_finalize.connect
