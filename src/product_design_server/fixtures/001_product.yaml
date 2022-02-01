@@ -1,15 +1,15 @@
 - model: product_domain.product
   pk: 1
-  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Handbags, type: ACCESSORIES, metadata: {}, description: null}
+  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Handbags, type: ACCESSORIES, meta: {}, description: null}
 - model: product_domain.product
   pk: 2
-  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Watches, type: ACCESSORIES, metadata: {}, description: null}
+  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Watches, type: ACCESSORIES, meta: {}, description: null}
 - model: product_domain.product
   pk: 3
-  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Jewellery, type: ACCESSORIES, metadata: {}, description: null}
+  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Jewellery, type: ACCESSORIES, meta: {}, description: null}
 - model: product_domain.product
   pk: 4
-  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Jeans, type: CLOTHING, metadata: {}, description: null}
+  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: Jeans, type: CLOTHING, meta: {}, description: null}
 - model: product_domain.product
   pk: 5
-  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: T-Shirts, type: CLOTHING, metadata: {}, description: null}
+  fields: {install_ts: ! '2022-01-30 00:00:00.000000+00:00', update_ts: ! '2022-01-30 00:00:00.000000+00:00', created_by_id: null, updated_by_id: null, name: T-Shirts, type: CLOTHING, meta: {}, description: null}

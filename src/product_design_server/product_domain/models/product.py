@@ -8,7 +8,7 @@ class Product(AutoTimestampedModel, UserTrackingModel):
     """
     name = models.CharField(max_length=255)
     type = models.TextField(choices=ProductType.choices(), default=ProductType.CLOTHING)
-    metadata = models.JSONField(default=dict)
+    meta = models.JSONField(default=dict)
     description = models.TextField(null=True)
 
     class Meta:
@@ -20,13 +20,13 @@ class Product(AutoTimestampedModel, UserTrackingModel):
         ]
 
     @staticmethod
-    def get_or_create(name, type, metadata, description):
+    def get_or_create(name, type, meta, description):
         """
         Get or create a product.
         """
         try:
             product = Product.objects.get(name=name, type=type)
         except Product.DoesNotExist:
-            product = Product.objects.create(name=name, type=type, metadata=metadata, description=description)
+            product = Product.objects.create(name=name, type=type, meta=meta, description=description)
             product.save()
         return product

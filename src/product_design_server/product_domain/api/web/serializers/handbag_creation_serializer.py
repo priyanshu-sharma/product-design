@@ -6,4 +6,4 @@ class HandbagCreationSerializer(serializers.Serializer):
     type = serializers.ChoiceField(choices=AccessoriesType.choices(), default=AccessoriesType.HANDBAGS)
     url = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255, allow_null=True, default=None)
-    metadata = serializers.JSONField(default=dict)
+    meta = serializers.JSONField(default=dict)
