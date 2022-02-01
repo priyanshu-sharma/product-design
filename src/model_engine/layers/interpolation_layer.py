@@ -4,7 +4,6 @@ from tqdm import tqdm
 import numpy as np
 from PIL import Image
 from extensions.utils import get_concat_h
-from random import randrange
 
 
 class InterpolationLayer(BaseLayer):

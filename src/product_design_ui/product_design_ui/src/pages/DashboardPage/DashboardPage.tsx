@@ -9,6 +9,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import { getImages } from "../../services/api/model-engine";
+import HandbagPage from "./components/HandbagPage";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -70,14 +71,11 @@ const DashboardPage: React.FC = () => {
             </Breadcrumb>
             <div
               className="site-layout-background"
-              style={{ padding: 30, minHeight: 360 }}
+              style={{ padding: 30, minHeight: 480 }}
             >
-              Hello World
+              <HandbagPage />
             </div>
-          </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Product Design ©2022 Created by Product Design Team
-          </Footer>
+          </Content>]
         </Layout>
       </Layout>
     </div>
