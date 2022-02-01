@@ -1,4 +1,4 @@
-from utils.singleton import Singleton
+from extensions import Singleton
 from settings import storage_config
 from storage_backend.redis_store import RedisStore
 
