@@ -3,9 +3,8 @@ import logging.config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.router import api_router
-from settings import LOGGING_CONFIG_PATH
-from api import (
+from api import api_router
+from extensions import (
     NetworkException,
     NetworkExceptionHandler,
     ResourceConflictException,
@@ -18,10 +17,7 @@ from api import (
     ParseExceptionHandler,
 )
 
-
-from settings import LOGGING_CONFIG_PATH
-from server_config.database import Base, SQLALCHEMY_DATABASE_URL
-
+from server_config import LOGGING_CONFIG_PATH
 logging.config.fileConfig(LOGGING_CONFIG_PATH, disable_existing_loggers=False)
 
 logger = logging.getLogger(__name__)
