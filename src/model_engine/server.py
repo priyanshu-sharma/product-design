@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.router import api_router
 from settings import LOGGING_CONFIG_PATH
-from api import (
+from extensions import (
     NetworkException,
     NetworkExceptionHandler,
     ResourceConflictException,
