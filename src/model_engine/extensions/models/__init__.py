@@ -1,1 +1,1 @@
-from model_engine.extensions.models.autotimestamped_model import AutoTimestampedModel
+from extensions.models.autotimestamped_model import AutoTimestampedModel

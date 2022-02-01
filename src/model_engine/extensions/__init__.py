@@ -10,3 +10,4 @@ from extensions.common_exceptions import (
     ParseException,
     ParseExceptionHandler,
 )
+from extensions.models import AutoTimestampedModel
