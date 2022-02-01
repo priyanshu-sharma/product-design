@@ -1,1 +1,2 @@
-from extensions.models.autotimestamped_model import AutoTimestampedModel
+from extensions.models.auto_timestamped_model import AutoTimestampedModel
+from extensions.models.user_tracking_model import UserTrackingModel

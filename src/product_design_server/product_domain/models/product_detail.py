@@ -10,7 +10,7 @@ class ProductDetail(AutoTimestampedModel, UserTrackingModel):
     name = models.CharField(max_length=255)
     url = models.URLField(max_length=1000)
     description = models.TextField(null=True)
-    metadata = models.JSONField(default=dict)
+    meta = models.JSONField(default=dict)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:
