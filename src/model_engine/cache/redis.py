@@ -1,5 +1,5 @@
 import redis
-
+from settings import storage_config
 
 class Redis(object):
     def __init__(self, url):
@@ -10,3 +10,5 @@ class Redis(object):
 
     def fetch(self, key):
         return self.client.get(key)
+
+cache = Redis(storage_config["cache"])
