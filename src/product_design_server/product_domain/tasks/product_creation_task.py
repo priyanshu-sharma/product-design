@@ -1,4 +1,3 @@
-from __future__ import absolute_import, unicode_literals
 from product_domain.api.public import product_api, handbag_detail_api
 from server_config.celery import app
 

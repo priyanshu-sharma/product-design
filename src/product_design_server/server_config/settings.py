@@ -162,3 +162,10 @@ LOGGING = {
 }
 
 DEFAULT_TIMEOUT_SECONDS = 5
+
+REDIS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 1,
+    'socket_timeout': 0.5,
+}

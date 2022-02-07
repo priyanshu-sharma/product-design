@@ -10,7 +10,7 @@ from product_domain.api.web.filters import HandbagDetailFilter
 from product_domain.api.web.serializers import HandbagDetailSerializer, ProductCreationSerializer
 from product_domain.api.web.pagination import StandardPagination
 from product_domain.models import HandbagDetail
-from product_domain.tasks import product_creation_task
+from product_domain.tasks import product_creation_task, populate_redis_task
 
 class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = HandbagDetail.objects.select_related("product").all()
@@ -18,8 +18,15 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
     filter_class = HandbagDetailFilter
     ordering_fields = ('id',)
-    ordering = ('-id',)
+    ordering = ('id',)
     pagination_class = StandardPagination
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, args, kwargs)
+        handbag_details = dict(response.data).get("results", [])
+        for handbag_detail in handbag_details:
+            populate_redis_task.delay(handbag_detail['id'])
+        return response
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
