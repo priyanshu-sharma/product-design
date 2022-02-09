@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.post(
     "/interpolations",
     tags=["Interpolations API"],
@@ -20,10 +21,11 @@ router = APIRouter()
     """,
     response_description="""
         Success
-    """
+    """,
 )
 async def interpolations(request: Request):
     from layers import InterpolationLayer
+
     try:
         request_data = await request.json()
         product_type = request_data.get("product_type", None)

@@ -10,14 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='handbagdetail',
-            old_name='metadata',
-            new_name='meta',
-        ),
-        migrations.RenameField(
-            model_name='product',
-            old_name='metadata',
-            new_name='meta',
-        ),
+        migrations.RenameField(model_name='handbagdetail', old_name='metadata', new_name='meta',),
+        migrations.RenameField(model_name='product', old_name='metadata', new_name='meta',),
     ]

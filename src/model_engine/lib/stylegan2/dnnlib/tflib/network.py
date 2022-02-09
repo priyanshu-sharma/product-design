@@ -146,7 +146,9 @@ class Network:
         build_kwargs["components"] = self.components
 
         # Build template graph.
-        with tfutil.absolute_variable_scope(self.scope, reuse=False), tfutil.absolute_name_scope(self.scope):  # ignore surrounding scopes
+        with tfutil.absolute_variable_scope(self.scope, reuse=False), tfutil.absolute_name_scope(
+            self.scope
+        ):  # ignore surrounding scopes
             assert tf.get_variable_scope().name == self.scope
             assert tf.get_default_graph().get_name_scope() == self.scope
             with tf.control_dependencies(None):  # ignore surrounding control dependencies
@@ -178,9 +180,13 @@ class Network:
         self.output_names = [t.name.split("/")[-1].split(":")[0] for t in self.output_templates]
 
         # List variables.
-        self.own_vars = OrderedDict((var.name[len(self.scope) + 1:].split(":")[0], var) for var in tf.global_variables(self.scope + "/"))
+        self.own_vars = OrderedDict(
+            (var.name[len(self.scope) + 1 :].split(":")[0], var) for var in tf.global_variables(self.scope + "/")
+        )
         self.vars = OrderedDict(self.own_vars)
-        self.vars.update((comp.name + "/" + name, var) for comp in self.components.values() for name, var in comp.vars.items())
+        self.vars.update(
+            (comp.name + "/" + name, var) for comp in self.components.values() for name, var in comp.vars.items()
+        )
         self.trainables = OrderedDict((name, var) for name, var in self.vars.items() if var.trainable)
         self.var_global_to_local = OrderedDict((var.name.split(":")[0], name) for name, var in self.vars.items())
 
@@ -196,7 +202,9 @@ class Network:
         """Re-initialize all trainable variables of this network, including sub-networks."""
         tfutil.run([var.initializer for var in self.trainables.values()])
 
-    def get_output_for(self, *in_expr: TfExpression, return_as_list: bool = False, **dynamic_kwargs) -> Union[TfExpression, List[TfExpression]]:
+    def get_output_for(
+        self, *in_expr: TfExpression, return_as_list: bool = False, **dynamic_kwargs
+    ) -> Union[TfExpression, List[TfExpression]]:
         """Construct TensorFlow expression(s) for the output(s) of this network, given the input expression(s)."""
         assert len(in_expr) == self.num_inputs
         assert not all(expr is None for expr in in_expr)
@@ -255,13 +263,13 @@ class Network:
     def __getstate__(self) -> dict:
         """Pickle export."""
         state = dict()
-        state["version"]            = 4
-        state["name"]               = self.name
-        state["static_kwargs"]      = dict(self.static_kwargs)
-        state["components"]         = dict(self.components)
-        state["build_module_src"]   = self._build_module_src
-        state["build_func_name"]    = self._build_func_name
-        state["variables"]          = list(zip(self.own_vars.keys(), tfutil.run(list(self.own_vars.values()))))
+        state["version"] = 4
+        state["name"] = self.name
+        state["static_kwargs"] = dict(self.static_kwargs)
+        state["components"] = dict(self.components)
+        state["build_module_src"] = self._build_module_src
+        state["build_func_name"] = self._build_func_name
+        state["variables"] = list(zip(self.own_vars.keys(), tfutil.run(list(self.own_vars.values()))))
         return state
 
     def __setstate__(self, state: dict) -> None:
@@ -287,7 +295,7 @@ class Network:
         module = types.ModuleType(module_name)
         sys.modules[module_name] = module
         _import_module_src[module] = self._build_module_src
-        exec(self._build_module_src, module.__dict__) # pylint: disable=exec-used
+        exec(self._build_module_src, module.__dict__)  # pylint: disable=exec-used
 
         # Locate network build function in the temporary module.
         self._build_func = util.get_obj_from_module(module, self._build_func_name)
@@ -338,7 +346,9 @@ class Network:
         net.copy_vars_from(self)
         return net
 
-    def setup_as_moving_average_of(self, src_net: "Network", beta: TfExpressionEx = 0.99, beta_nontrainable: TfExpressionEx = 0.0) -> tf.Operation:
+    def setup_as_moving_average_of(
+        self, src_net: "Network", beta: TfExpressionEx = 0.99, beta_nontrainable: TfExpressionEx = 0.0
+    ) -> tf.Operation:
         """Construct a TensorFlow op that updates the variables of this network
         to be slightly closer to those of the given network."""
         with tfutil.absolute_name_scope(self.scope + "/_MovingAvg"):
@@ -350,16 +360,18 @@ class Network:
                     ops.append(var.assign(new_value))
             return tf.group(*ops)
 
-    def run(self,
-            *in_arrays: Tuple[Union[np.ndarray, None], ...],
-            input_transform: dict = None,
-            output_transform: dict = None,
-            return_as_list: bool = False,
-            print_progress: bool = False,
-            minibatch_size: int = None,
-            num_gpus: int = 1,
-            assume_frozen: bool = False,
-            **dynamic_kwargs) -> Union[np.ndarray, Tuple[np.ndarray, ...], List[np.ndarray]]:
+    def run(
+        self,
+        *in_arrays: Tuple[Union[np.ndarray, None], ...],
+        input_transform: dict = None,
+        output_transform: dict = None,
+        return_as_list: bool = False,
+        print_progress: bool = False,
+        minibatch_size: int = None,
+        num_gpus: int = 1,
+        assume_frozen: bool = False,
+        **dynamic_kwargs
+    ) -> Union[np.ndarray, Tuple[np.ndarray, ...], List[np.ndarray]]:
         """Run this network for the given NumPy array(s), and return the output(s) as NumPy array(s).
 
         Args:
@@ -386,13 +398,21 @@ class Network:
             minibatch_size = num_items
 
         # Construct unique hash key from all arguments that affect the TensorFlow graph.
-        key = dict(input_transform=input_transform, output_transform=output_transform, num_gpus=num_gpus, assume_frozen=assume_frozen, dynamic_kwargs=dynamic_kwargs)
+        key = dict(
+            input_transform=input_transform,
+            output_transform=output_transform,
+            num_gpus=num_gpus,
+            assume_frozen=assume_frozen,
+            dynamic_kwargs=dynamic_kwargs,
+        )
+
         def unwind_key(obj):
             if isinstance(obj, dict):
                 return [(key, unwind_key(value)) for key, value in sorted(obj.items())]
             if callable(obj):
                 return util.get_top_level_function_name(obj)
             return obj
+
         key = repr(unwind_key(key))
 
         # Build graph.
@@ -438,11 +458,14 @@ class Network:
 
             mb_end = min(mb_begin + minibatch_size, num_items)
             mb_num = mb_end - mb_begin
-            mb_in = [src[mb_begin : mb_end] if src is not None else np.zeros([mb_num] + shape[1:]) for src, shape in zip(in_arrays, self.input_shapes)]
+            mb_in = [
+                src[mb_begin:mb_end] if src is not None else np.zeros([mb_num] + shape[1:])
+                for src, shape in zip(in_arrays, self.input_shapes)
+            ]
             mb_out = tf.get_default_session().run(out_expr, dict(zip(in_expr, mb_in)))
 
             for dst, src in zip(out_arrays, mb_out):
-                dst[mb_begin: mb_end] = src
+                dst[mb_begin:mb_end] = src
 
         # Done.
         if print_progress:
@@ -472,9 +495,11 @@ class Network:
 
             # Filter ops and vars by scope.
             global_prefix = scope + "/"
-            local_prefix = global_prefix[len(self.scope) + 1:]
+            local_prefix = global_prefix[len(self.scope) + 1 :]
             cur_ops = [op for op in parent_ops if op.name.startswith(global_prefix) or op.name == global_prefix[:-1]]
-            cur_vars = [(name, var) for name, var in parent_vars if name.startswith(local_prefix) or name == local_prefix[:-1]]
+            cur_vars = [
+                (name, var) for name, var in parent_vars if name.startswith(local_prefix) or name == local_prefix[:-1]
+            ]
             if not cur_ops and not cur_vars:
                 return
 
@@ -484,10 +509,15 @@ class Network:
                 cur_ops = [op for op in cur_ops if not op.name.startswith(var_prefix)]
 
             # Scope does not contain ops as immediate children => recurse deeper.
-            contains_direct_ops = any("/" not in op.name[len(global_prefix):] and op.type not in ["Identity", "Cast", "Transpose"] for op in cur_ops)
+            contains_direct_ops = any(
+                "/" not in op.name[len(global_prefix) :] and op.type not in ["Identity", "Cast", "Transpose"]
+                for op in cur_ops
+            )
             if (level == 0 or not contains_direct_ops) and (len(cur_ops) + len(cur_vars)) > 1:
                 visited = set()
-                for rel_name in [op.name[len(global_prefix):] for op in cur_ops] + [name[len(local_prefix):] for name, _var in cur_vars]:
+                for rel_name in [op.name[len(global_prefix) :] for op in cur_ops] + [
+                    name[len(local_prefix) :] for name, _var in cur_vars
+                ]:
                     token = rel_name.split("/")[0]
                     if token not in visited:
                         recurse(global_prefix + token, cur_ops, cur_vars, level + 1)
@@ -495,7 +525,7 @@ class Network:
                 return
 
             # Report layer.
-            layer_name = scope[len(self.scope) + 1:]
+            layer_name = scope[len(self.scope) + 1 :]
             layer_output = cur_ops[-1].outputs[0] if cur_ops else cur_vars[-1][1]
             layer_trainables = [var for _name, var in cur_vars if var.trainable]
             layers.append((layer_name, layer_output, layer_trainables))
@@ -547,10 +577,12 @@ class Network:
 
                 tf.summary.histogram(name, var)
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 # Backwards-compatible emulation of legacy output transformation in Network.run().
 
 _print_legacy_warning = True
+
 
 def _handle_legacy_output_transforms(output_transform, dynamic_kwargs):
     global _print_legacy_warning
@@ -571,6 +603,7 @@ def _handle_legacy_output_transforms(output_transform, dynamic_kwargs):
     new_transform = {kwarg: new_kwargs.pop(kwarg) for kwarg in legacy_kwargs if kwarg in dynamic_kwargs}
     new_transform["func"] = _legacy_output_transform_func
     return new_transform, new_kwargs
+
 
 def _legacy_output_transform_func(*expr, out_mul=1.0, out_add=0.0, out_shrink=1, out_dtype=None):
     if out_mul != 1.0:

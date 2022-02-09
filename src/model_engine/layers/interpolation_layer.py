@@ -6,6 +6,7 @@ from PIL import Image
 from extensions.utils import get_concat_h
 from random import randrange
 
+
 class InterpolationLayer(BaseLayer):
     NAME = "interpolation"
     PREFIX = "i"
@@ -16,7 +17,17 @@ class InterpolationLayer(BaseLayer):
         super().__init__()
         self.redis_store = storage_registry.redis
         self.layer_prefixes = self.redis_store.add_layer(self.NAME, self.PREFIX)
-        self.image_map_dimensions, self.results_size, self.output_gifs_path, self.results_size, self.fps, self.image_map_data, self.generator, self.generator_manager, self.num_interps = None
+        (
+            self.image_map_dimensions,
+            self.results_size,
+            self.output_gifs_path,
+            self.results_size,
+            self.fps,
+            self.image_map_data,
+            self.generator,
+            self.generator_manager,
+            self.num_interps,
+        ) = None
         self.proportion_list_1 = [0.15, 0.15, 0.35, 0.35]
         self.proportion_list_2 = [0.25, 0.25, 0.25, 0.25]
 
@@ -43,20 +54,21 @@ class InterpolationLayer(BaseLayer):
         _fetch(key, field)
 
     def get_interpolated_vector(self, latent_vectors, proportions):
-        return sum([vector*proportion for vector, proportion in zip(latent_vectors, proportions)])
+        return sum([vector * proportion for vector, proportion in zip(latent_vectors, proportions)])
 
     def interpolate(self, interpolation_type, interpolation_dict):
         from components import INTERPOLATION_TYPE_TO_MANAGER_MAP
+
         if interpolation_type in INTERPOLATION_TYPE_TO_MANAGER_MAP.keys():
             return INTERPOLATION_TYPE_TO_MANAGER_MAP[interpolation_type](interpolation_dict)
         else:
             raise NotImplementedError
-    
+
     def make_latent_interp_animation(self, interpolation_dict, interpolation_type):
-        step_size = 1.0/self.num_interps
+        step_size = 1.0 / self.num_interps
         all_imgs = []
         amounts = np.arange(0, 1, step_size)
-        
+
         for alpha in tqdm(amounts):
             interpolation_dict['alpha'] = alpha
             interpolated_latent_code = self.interpolate(interpolation_type, interpolation_dict)
@@ -69,7 +81,7 @@ class InterpolationLayer(BaseLayer):
             all_imgs.append(frame)
 
         save_name = '{}/latent_space_traversal.gif'.format(self.output_gifs_path)
-        all_imgs[0].save(save_name, save_all=True, append_images=all_imgs[1:], duration=1000/self.fps, loop=0)
+        all_imgs[0].save(save_name, save_all=True, append_images=all_imgs[1:], duration=1000 / self.fps, loop=0)
         return save_name
 
     def transform(self, interpolation_type):
@@ -82,7 +94,7 @@ class InterpolationLayer(BaseLayer):
             'latent_code_2': latent_code_2,
         }
         return self.make_latent_interp_animation(interpolation_dict, interpolation_type)
-    
+
     def _fetch_config(self, config):
         self.image_map_dimensions = config['generator']['image_map_dimensions']
         self.results_size = config['generator']['results_size']
@@ -95,6 +107,8 @@ class InterpolationLayer(BaseLayer):
 
         config = ACCESSORIES_TYPE_TO_CONFIG_MAP[product_type]
         self._fetch_config(config)
-        self.generator_manager = GeneratorManager(self.image_map_dimensions, self.results_size, self.generated_images_path)
+        self.generator_manager = GeneratorManager(
+            self.image_map_dimensions, self.results_size, self.generated_images_path
+        )
         self.generator = self.generator
         return {"status": "done"}

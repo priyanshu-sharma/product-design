@@ -15,7 +15,8 @@ import dnnlib.tflib as tflib
 from metrics import metric_base
 from training import misc
 
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 def batch_pairwise_distances(U, V):
     """ Compute pairwise distances between two batches of feature vectors."""
@@ -29,14 +30,17 @@ def batch_pairwise_distances(U, V):
         norm_v = tf.reshape(norm_v, [1, -1])
 
         # Pairwise squared Euclidean distances.
-        D = tf.maximum(norm_u - 2*tf.matmul(U, V, False, True) + norm_v, 0.0)
+        D = tf.maximum(norm_u - 2 * tf.matmul(U, V, False, True) + norm_v, 0.0)
 
     return D
 
-#----------------------------------------------------------------------------
 
-class DistanceBlock():
+# ----------------------------------------------------------------------------
+
+
+class DistanceBlock:
     """Distance block."""
+
     def __init__(self, num_features, num_gpus):
         self.num_features = num_features
         self.num_gpus = num_gpus
@@ -56,10 +60,13 @@ class DistanceBlock():
         """Evaluate pairwise distances between two batches of feature vectors."""
         return self._distance_block.eval(feed_dict={self._features_batch1: U, self._features_batch2: V})
 
-#----------------------------------------------------------------------------
 
-class ManifoldEstimator():
+# ----------------------------------------------------------------------------
+
+
+class ManifoldEstimator:
     """Finds an estimate for the manifold of given feature vectors."""
+
     def __init__(self, distance_block, features, row_batch_size, col_batch_size, nhood_sizes, clamp_to_percentile=None):
         """Find an estimate of the manifold of given feature vectors."""
         num_images = features.shape[0]
@@ -84,14 +91,18 @@ class ManifoldEstimator():
                 col_batch = features[begin2:end2]
 
                 # Compute distances between batches.
-                distance_batch[0:end1-begin1, begin2:end2] = self._distance_block.pairwise_distances(row_batch, col_batch)
+                distance_batch[0 : end1 - begin1, begin2:end2] = self._distance_block.pairwise_distances(
+                    row_batch, col_batch
+                )
 
             # Find the kth nearest neighbor from the current batch.
-            self.D[begin1:end1, :] = np.partition(distance_batch[0:end1-begin1, :], seq, axis=1)[:, self.nhood_sizes]
+            self.D[begin1:end1, :] = np.partition(distance_batch[0 : end1 - begin1, :], seq, axis=1)[
+                :, self.nhood_sizes
+            ]
 
         if clamp_to_percentile is not None:
             max_distances = np.percentile(self.D, clamp_to_percentile, axis=0)
-            self.D[self.D > max_distances] = 0  #max_distances  # 0
+            self.D[self.D > max_distances] = 0  # max_distances  # 0
 
     def evaluate(self, eval_features, return_realism=False, return_neighbors=False):
         """Evaluate if new feature vectors are in the estimated manifold."""
@@ -99,7 +110,7 @@ class ManifoldEstimator():
         num_ref_images = self.D.shape[0]
         distance_batch = np.zeros([self.row_batch_size, num_ref_images], dtype=np.float16)
         batch_predictions = np.zeros([num_eval_images, self.num_nhoods], dtype=np.int32)
-        #max_realism_score = np.zeros([num_eval_images,], dtype=np.float32)
+        # max_realism_score = np.zeros([num_eval_images,], dtype=np.float32)
         realism_score = np.zeros([num_eval_images,], dtype=np.float32)
         nearest_indices = np.zeros([num_eval_images,], dtype=np.int32)
 
@@ -111,18 +122,22 @@ class ManifoldEstimator():
                 end2 = min(begin2 + self.col_batch_size, num_ref_images)
                 ref_batch = self._ref_features[begin2:end2]
 
-                distance_batch[0:end1-begin1, begin2:end2] = self._distance_block.pairwise_distances(feature_batch, ref_batch)
+                distance_batch[0 : end1 - begin1, begin2:end2] = self._distance_block.pairwise_distances(
+                    feature_batch, ref_batch
+                )
 
             # From the minibatch of new feature vectors, determine if they are in the estimated manifold.
             # If a feature vector is inside a hypersphere of some reference sample, then the new sample lies on the estimated manifold.
             # The radii of the hyperspheres are determined from distances of neighborhood size k.
-            samples_in_manifold = distance_batch[0:end1-begin1, :, None] <= self.D
+            samples_in_manifold = distance_batch[0 : end1 - begin1, :, None] <= self.D
             batch_predictions[begin1:end1] = np.any(samples_in_manifold, axis=1).astype(np.int32)
 
-            #max_realism_score[begin1:end1] = np.max(self.D[:, 0] / (distance_batch[0:end1-begin1, :] + 1e-18), axis=1)
-            #nearest_indices[begin1:end1] = np.argmax(self.D[:, 0] / (distance_batch[0:end1-begin1, :] + 1e-18), axis=1)
-            nearest_indices[begin1:end1] = np.argmin(distance_batch[0:end1-begin1, :], axis=1)
-            realism_score[begin1:end1] = self.D[nearest_indices[begin1:end1], 0] / np.min(distance_batch[0:end1-begin1, :], axis=1)
+            # max_realism_score[begin1:end1] = np.max(self.D[:, 0] / (distance_batch[0:end1-begin1, :] + 1e-18), axis=1)
+            # nearest_indices[begin1:end1] = np.argmax(self.D[:, 0] / (distance_batch[0:end1-begin1, :] + 1e-18), axis=1)
+            nearest_indices[begin1:end1] = np.argmin(distance_batch[0 : end1 - begin1, :], axis=1)
+            realism_score[begin1:end1] = self.D[nearest_indices[begin1:end1], 0] / np.min(
+                distance_batch[0 : end1 - begin1, :], axis=1
+            )
 
         if return_realism and return_neighbors:
             return batch_predictions, realism_score, nearest_indices
@@ -133,40 +148,51 @@ class ManifoldEstimator():
 
         return batch_predictions
 
-#----------------------------------------------------------------------------
 
-def knn_precision_recall_features(ref_features, eval_features, feature_net, nhood_sizes,
-                                  row_batch_size, col_batch_size, num_gpus):
+# ----------------------------------------------------------------------------
+
+
+def knn_precision_recall_features(
+    ref_features, eval_features, feature_net, nhood_sizes, row_batch_size, col_batch_size, num_gpus
+):
     """Calculates k-NN precision and recall for two sets of feature vectors."""
     state = dnnlib.EasyDict()
-    #num_images = ref_features.shape[0]
+    # num_images = ref_features.shape[0]
     num_features = feature_net.output_shape[1]
     state.ref_features = ref_features
     state.eval_features = eval_features
 
     # Initialize DistanceBlock and ManifoldEstimators.
     distance_block = DistanceBlock(num_features, num_gpus)
-    state.ref_manifold = ManifoldEstimator(distance_block, state.ref_features, row_batch_size, col_batch_size, nhood_sizes)
-    state.eval_manifold = ManifoldEstimator(distance_block, state.eval_features, row_batch_size, col_batch_size, nhood_sizes)
+    state.ref_manifold = ManifoldEstimator(
+        distance_block, state.ref_features, row_batch_size, col_batch_size, nhood_sizes
+    )
+    state.eval_manifold = ManifoldEstimator(
+        distance_block, state.eval_features, row_batch_size, col_batch_size, nhood_sizes
+    )
 
     # Evaluate precision and recall using k-nearest neighbors.
-    #print('Evaluating k-NN precision and recall with %i samples...' % num_images)
-    #start = time.time()
+    # print('Evaluating k-NN precision and recall with %i samples...' % num_images)
+    # start = time.time()
 
     # Precision: How many points from eval_features are in ref_features manifold.
-    state.precision, state.realism_scores, state.nearest_neighbors = state.ref_manifold.evaluate(state.eval_features, return_realism=True, return_neighbors=True)
+    state.precision, state.realism_scores, state.nearest_neighbors = state.ref_manifold.evaluate(
+        state.eval_features, return_realism=True, return_neighbors=True
+    )
     state.knn_precision = state.precision.mean(axis=0)
 
     # Recall: How many points from ref_features are in eval_features manifold.
     state.recall = state.eval_manifold.evaluate(state.ref_features)
     state.knn_recall = state.recall.mean(axis=0)
 
-    #elapsed_time = time.time() - start
-    #print('Done evaluation in: %gs' % elapsed_time)
+    # elapsed_time = time.time() - start
+    # print('Done evaluation in: %gs' % elapsed_time)
 
     return state
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+
 
 class PR(metric_base.MetricBase):
     def __init__(self, num_images, nhood_size, minibatch_per_gpu, row_batch_size, col_batch_size, **kwargs):
@@ -191,7 +217,7 @@ class PR(metric_base.MetricBase):
             for idx, images in enumerate(self._iterate_reals(minibatch_size=minibatch_size)):
                 begin = idx * minibatch_size
                 end = min(begin + minibatch_size, self.num_images)
-                ref_features[begin:end] = feature_net.run(images[:end-begin], num_gpus=num_gpus, assume_frozen=True)
+                ref_features[begin:end] = feature_net.run(images[: end - begin], num_gpus=num_gpus, assume_frozen=True)
                 if end == self.num_images:
                     break
             misc.save_pkl(ref_features, cache_file)
@@ -213,12 +239,20 @@ class PR(metric_base.MetricBase):
         for begin in range(0, self.num_images, minibatch_size):
             self._report_progress(begin, self.num_images)
             end = min(begin + minibatch_size, self.num_images)
-            eval_features[begin:end] = np.concatenate(tflib.run(result_expr), axis=0)[:end-begin]
+            eval_features[begin:end] = np.concatenate(tflib.run(result_expr), axis=0)[: end - begin]
 
         # Calculate precision and recall.
-        state = knn_precision_recall_features(ref_features=ref_features, eval_features=eval_features, feature_net=feature_net,
-            nhood_sizes=[self.nhood_size], row_batch_size=self.row_batch_size, col_batch_size=self.row_batch_size, num_gpus=num_gpus)
+        state = knn_precision_recall_features(
+            ref_features=ref_features,
+            eval_features=eval_features,
+            feature_net=feature_net,
+            nhood_sizes=[self.nhood_size],
+            row_batch_size=self.row_batch_size,
+            col_batch_size=self.row_batch_size,
+            num_gpus=num_gpus,
+        )
         self._report_result(state.knn_precision[0], suffix='_precision')
         self._report_result(state.knn_recall[0], suffix='_recall')
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

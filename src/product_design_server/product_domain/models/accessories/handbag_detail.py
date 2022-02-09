@@ -8,6 +8,7 @@ class HandbagDetail(ProductDetail):
     """
     HandbagDetail model
     """
+
     type = models.TextField(default=AccessoriesType.HANDBAGS)
 
     class Meta:
@@ -26,7 +27,9 @@ class HandbagDetail(ProductDetail):
         try:
             handbag_detail = HandbagDetail.objects.get(name=name, product=product)
         except HandbagDetail.DoesNotExist:
-            handbag_detail = HandbagDetail.objects.create(name=name, url=url, description=description, meta=meta, product=product)
+            handbag_detail = HandbagDetail.objects.create(
+                name=name, url=url, description=description, meta=meta, product=product
+            )
             handbag_detail.save()
         return handbag_detail
 

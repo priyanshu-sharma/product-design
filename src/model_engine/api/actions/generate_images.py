@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.post(
     "/generate_images",
     tags=["Generate Images API"],
@@ -20,10 +21,11 @@ router = APIRouter()
     """,
     response_description="""
         Success
-    """
+    """,
 )
 async def generate_images(request: Request):
     from layers import interpolation_layer
+
     try:
         request_data = await request.json()
         product_type = request_data.get("product_type", None)

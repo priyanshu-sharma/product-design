@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from product_domain.enums import AccessoriesType
 
+
 class HandbagCreationSerializer(serializers.Serializer):
     name = serializers.CharField()
     type = serializers.ChoiceField(choices=AccessoriesType.choices(), default=AccessoriesType.HANDBAGS)

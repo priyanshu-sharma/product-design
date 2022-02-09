@@ -4,10 +4,7 @@ from server_config import RedisClient
 
 
 @app.task(
-    autoretry_for=(Exception,),
-    retry_backoff=True,
-    acks_late=True,
-    queue="populate_redis_queue",
+    autoretry_for=(Exception,), retry_backoff=True, acks_late=True, queue="populate_redis_queue",
 )
 def populate_redis_task(handbag_detail_id):
     redis_client = RedisClient().get_instance()

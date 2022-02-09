@@ -18,6 +18,7 @@ from extensions import (
 )
 
 from server_config import LOGGING_CONFIG_PATH
+
 logging.config.fileConfig(LOGGING_CONFIG_PATH, disable_existing_loggers=False)
 
 logger = logging.getLogger(__name__)
@@ -26,10 +27,7 @@ app = FastAPI(title="Product Design Model API", version="0.1")
 
 app.include_router(api_router)
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"],
 )
 
 
@@ -48,4 +46,3 @@ app.add_exception_handler(ResourceConflictException, ResourceConflictExceptionHa
 app.add_exception_handler(ResourceNotFoundException, ResourceNotFoundExceptionHandler)
 app.add_exception_handler(BadRequestException, BadRequestExceptionHandler)
 app.add_exception_handler(ParseException, ParseExceptionHandler)
-

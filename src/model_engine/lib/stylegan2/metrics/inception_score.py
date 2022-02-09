@@ -13,7 +13,8 @@ import dnnlib.tflib as tflib
 from metrics import metric_base
 from training import misc
 
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class IS(metric_base.MetricBase):
     def __init__(self, num_images, num_splits, minibatch_per_gpu, **kwargs):
@@ -24,7 +25,9 @@ class IS(metric_base.MetricBase):
 
     def _evaluate(self, Gs, Gs_kwargs, num_gpus):
         minibatch_size = num_gpus * self.minibatch_per_gpu
-        inception = misc.load_pkl('http://d36zk2xti64re0.cloudfront.net/stylegan1/networks/metrics/inception_v3_softmax.pkl')
+        inception = misc.load_pkl(
+            'http://d36zk2xti64re0.cloudfront.net/stylegan1/networks/metrics/inception_v3_softmax.pkl'
+        )
         activations = np.empty([self.num_images, inception.output_shape[1]], dtype=np.float32)
 
         # Construct TensorFlow graph.
@@ -43,7 +46,7 @@ class IS(metric_base.MetricBase):
         for begin in range(0, self.num_images, minibatch_size):
             self._report_progress(begin, self.num_images)
             end = min(begin + minibatch_size, self.num_images)
-            activations[begin:end] = np.concatenate(tflib.run(result_expr), axis=0)[:end-begin]
+            activations[begin:end] = np.concatenate(tflib.run(result_expr), axis=0)[: end - begin]
 
         # Calculate IS.
         scores = []
@@ -55,4 +58,5 @@ class IS(metric_base.MetricBase):
         self._report_result(np.mean(scores), suffix='_mean')
         self._report_result(np.std(scores), suffix='_std')
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

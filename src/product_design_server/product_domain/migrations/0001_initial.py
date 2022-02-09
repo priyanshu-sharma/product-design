@@ -7,8 +7,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -20,20 +19,19 @@ class Migration(migrations.Migration):
                 ('updated_by_id', models.IntegerField(blank=True, null=True)),
                 ('id', models.BigIntegerField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
-                ('type', models.TextField(choices=[('ACCESSORIES', 'ACCESSORIES'), ('CLOTHING', 'CLOTHING')], default='CLOTHING')),
+                (
+                    'type',
+                    models.TextField(
+                        choices=[('ACCESSORIES', 'ACCESSORIES'), ('CLOTHING', 'CLOTHING')], default='CLOTHING'
+                    ),
+                ),
                 ('metadata', models.JSONField(default=dict)),
                 ('description', models.TextField()),
             ],
-            options={
-                'db_table': 'pd_product',
-            },
+            options={'db_table': 'pd_product',},
         ),
         migrations.AddIndex(
-            model_name='product',
-            index=models.Index(fields=['name', 'type'], name='pd_product_name_5ae812_idx'),
+            model_name='product', index=models.Index(fields=['name', 'type'], name='pd_product_name_5ae812_idx'),
         ),
-        migrations.AlterUniqueTogether(
-            name='product',
-            unique_together={('name', 'type')},
-        ),
+        migrations.AlterUniqueTogether(name='product', unique_together={('name', 'type')},),
     ]

@@ -5,9 +5,7 @@ from product_domain.api.web.views import HandbagDetailViewSet
 
 router = DefaultRouter()
 router.register(
-    r"handbag_detail",
-    HandbagDetailViewSet,
-    basename="handbag_detail",
+    r"handbag_detail", HandbagDetailViewSet, basename="handbag_detail",
 )
 
 urlpatterns = [

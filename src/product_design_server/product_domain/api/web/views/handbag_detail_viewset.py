@@ -12,6 +12,7 @@ from product_domain.api.web.pagination import StandardPagination
 from product_domain.models import HandbagDetail
 from product_domain.tasks import product_creation_task, populate_redis_task
 
+
 class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = HandbagDetail.objects.select_related("product").all()
     serializer_class = HandbagDetailSerializer
@@ -33,13 +34,7 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
         product_creation_serializer = ProductCreationSerializer(data=request.data)
         product_creation_serializer.is_valid(raise_exception=True)
         serialized_data = product_creation_serializer.validated_data
-        transaction.on_commit(
-            lambda: product_creation_task.delay(dict(serialized_data))
-        )
-        return Response( 
-            data ={
-                "message": "Product and Product Detail created",
-                "status": "Success"
-            }, 
-            status=status.HTTP_201_CREATED
+        transaction.on_commit(lambda: product_creation_task.delay(dict(serialized_data)))
+        return Response(
+            data={"message": "Product and Product Detail created", "status": "Success"}, status=status.HTTP_201_CREATED
         )

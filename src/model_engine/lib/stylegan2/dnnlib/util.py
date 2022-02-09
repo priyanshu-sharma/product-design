@@ -72,7 +72,7 @@ class Logger(object):
 
     def write(self, text: str) -> None:
         """Write text to stdout (and a file) and optionally flush."""
-        if len(text) == 0: # workaround for a bug in VSCode debugger: sys.stdout.write(''); sys.stdout.flush() => crash
+        if len(text) == 0:  # workaround for a bug in VSCode debugger: sys.stdout.write(''); sys.stdout.flush() => crash
             return
 
         if self.file is not None:
@@ -152,7 +152,7 @@ _str_to_ctype = {
     "int32": ctypes.c_int32,
     "int64": ctypes.c_int64,
     "float32": ctypes.c_float,
-    "float64": ctypes.c_double
+    "float64": ctypes.c_double,
 }
 
 
@@ -191,6 +191,7 @@ def is_pickleable(obj: Any) -> bool:
 # Functionality to import modules/objects by name, and call functions by name
 # ------------------------------------------------------------------------------------------
 
+
 def get_module_from_obj_name(obj_name: str) -> Tuple[types.ModuleType, str]:
     """Searches for the underlying module behind the name to some python object.
     Returns the module and the object name (original name with module part removed)."""
@@ -206,8 +207,8 @@ def get_module_from_obj_name(obj_name: str) -> Tuple[types.ModuleType, str]:
     # try each alternative in turn
     for module_name, local_obj_name in name_pairs:
         try:
-            module = importlib.import_module(module_name) # may raise ImportError
-            get_obj_from_module(module, local_obj_name) # may raise AttributeError
+            module = importlib.import_module(module_name)  # may raise ImportError
+            get_obj_from_module(module, local_obj_name)  # may raise AttributeError
             return module, local_obj_name
         except:
             pass
@@ -215,7 +216,7 @@ def get_module_from_obj_name(obj_name: str) -> Tuple[types.ModuleType, str]:
     # maybe some of the modules themselves contain errors?
     for module_name, _local_obj_name in name_pairs:
         try:
-            importlib.import_module(module_name) # may raise ImportError
+            importlib.import_module(module_name)  # may raise ImportError
         except ImportError:
             if not str(sys.exc_info()[1]).startswith("No module named '" + module_name + "'"):
                 raise
@@ -223,8 +224,8 @@ def get_module_from_obj_name(obj_name: str) -> Tuple[types.ModuleType, str]:
     # maybe the requested attribute is missing?
     for module_name, local_obj_name in name_pairs:
         try:
-            module = importlib.import_module(module_name) # may raise ImportError
-            get_obj_from_module(module, local_obj_name) # may raise AttributeError
+            module = importlib.import_module(module_name)  # may raise ImportError
+            get_obj_from_module(module, local_obj_name)  # may raise AttributeError
         except ImportError:
             pass
 
@@ -276,7 +277,10 @@ def get_top_level_function_name(obj: Any) -> str:
 # File system helpers
 # ------------------------------------------------------------------------------------------
 
-def list_dir_recursively_with_ignore(dir_path: str, ignores: List[str] = None, add_base_to_relative: bool = False) -> List[Tuple[str, str]]:
+
+def list_dir_recursively_with_ignore(
+    dir_path: str, ignores: List[str] = None, add_base_to_relative: bool = False
+) -> List[Tuple[str, str]]:
     """List all files recursively in a given directory while ignoring given file and directory names.
     Returns list of tuples containing both absolute and relative paths."""
     assert os.path.isdir(dir_path)
@@ -325,6 +329,7 @@ def copy_files_and_create_dirs(files: List[Tuple[str, str]]) -> None:
 # URL helpers
 # ------------------------------------------------------------------------------------------
 
+
 def is_url(obj: Any, allow_file_urls: bool = False) -> bool:
     """Determine whether the given object is a valid URL string."""
     if not isinstance(obj, str) or not "://" in obj:
@@ -350,7 +355,7 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
 
     # Handle file URLs.
     if url.startswith('file:///'):
-        return open(url[len('file:///'):], "rb")
+        return open(url[len('file:///') :], "rb")
 
     # Lookup from cache.
     url_md5 = hashlib.md5(url.encode("utf-8")).hexdigest()
@@ -375,7 +380,9 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
                     if len(res.content) < 8192:
                         content_str = res.content.decode("utf-8")
                         if "download_warning" in res.headers.get("Set-Cookie", ""):
-                            links = [html.unescape(link) for link in content_str.split('"') if "export=download" in link]
+                            links = [
+                                html.unescape(link) for link in content_str.split('"') if "export=download" in link
+                            ]
                             if len(links) == 1:
                                 url = requests.compat.urljoin(url, links[0])
                                 raise IOError("Google Drive virus checker nag")
@@ -404,7 +411,7 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
         os.makedirs(cache_dir, exist_ok=True)
         with open(temp_file, "wb") as f:
             f.write(url_data)
-        os.replace(temp_file, cache_file) # atomic
+        os.replace(temp_file, cache_file)  # atomic
 
     # Return data as file object.
     return io.BytesIO(url_data)
