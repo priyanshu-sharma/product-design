@@ -2,16 +2,16 @@ import pandas as pd
 from random import randrange
 from PIL import Image
 from components import Generator
-from server_config import generator, media
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 class GeneratorManager:
-    def __init__(self):
+    def __init__(self, image_map_dimensions, results_size, generated_images_path):
         self.generator = Generator()
-        self.image_map_dimensions = generator['image_map_dimensions']
-        self.results_size = generator['results_size']
+        self.image_map_dimensions = image_map_dimensions
+        self.results_size = results_size
         self.image_map_data = None
+        self.generated_images_path = generated_images_path
 
     def generate_image_random(self):
         image_map_data = []
@@ -44,8 +44,22 @@ class GeneratorManager:
 
         fig.subplots_adjust(wspace=0, hspace=0)
         plt.subplots_adjust(wspace=0, hspace=0)
-        plt.savefig('{}handbags-fakes-{}.png'.format(media['images']['handbags'], str(datetime.utcnow())),bbox_inches = 'tight',pad_inches=0)
+        plt.savefig('{}handbags-fakes-{}.png'.format(self.generated_images_path, str(datetime.utcnow())),bbox_inches = 'tight',pad_inches=0)
 
     def load(self):
         self.generate_image_random()
         self.plot_image_map()
+        return self.image_map_data
+    
+    def generate_image_from_z(self, z):
+        images = self.generator.generate_image_from_z(z)
+        return images
+    
+    def get_interpolated_vector(self, latent_vectors, proportions):
+        return sum([vector*proportion for vector, proportion in zip(latent_vectors, proportions)])
+    
+    def get_image_and_associated_latent_code(self, proportion_list):
+        vector_list = [self.image_map_data['latent_vector'][randrange(self.image_map_dimensions * self.image_map_dimensions)] for i in range(4)]
+        latent_code = self.get_interpolated_vector(vector_list, proportion_list)
+        image = Image.fromarray(self.generate_image_from_z(latent_code)[0]).resize((self.results_size, self.results_size))
+        return image, latent_code
