@@ -2,6 +2,7 @@ from rest_framework import serializers
 from product_domain.enums import ProductType
 from product_domain.api.web.serializers import HandbagCreationSerializer
 
+
 class ProductCreationSerializer(serializers.Serializer):
     product_type = serializers.ChoiceField(choices=ProductType.choices())
     product_name = serializers.CharField()

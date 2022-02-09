@@ -17,8 +17,9 @@ import dnnlib.tflib as tflib
 from training import misc
 from training import dataset
 
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Base class for metrics.
+
 
 class MetricBase:
     def __init__(self, name):
@@ -58,15 +59,34 @@ class MetricBase:
         self._progress_max = pmax
         self._progress_sec = psec
 
-    def run(self, network_pkl, run_dir=None, data_dir=None, dataset_args=None, mirror_augment=None, num_gpus=1, tf_config=None, log_results=True, Gs_kwargs=dict(is_validation=True)):
-        self._reset(network_pkl=network_pkl, run_dir=run_dir, data_dir=data_dir, dataset_args=dataset_args, mirror_augment=mirror_augment)
+    def run(
+        self,
+        network_pkl,
+        run_dir=None,
+        data_dir=None,
+        dataset_args=None,
+        mirror_augment=None,
+        num_gpus=1,
+        tf_config=None,
+        log_results=True,
+        Gs_kwargs=dict(is_validation=True),
+    ):
+        self._reset(
+            network_pkl=network_pkl,
+            run_dir=run_dir,
+            data_dir=data_dir,
+            dataset_args=dataset_args,
+            mirror_augment=mirror_augment,
+        )
         time_begin = time.time()
-        with tf.Graph().as_default(), tflib.create_session(tf_config).as_default(): # pylint: disable=not-context-manager
+        with tf.Graph().as_default(), tflib.create_session(
+            tf_config
+        ).as_default():  # pylint: disable=not-context-manager
             self._report_progress(0, 1)
             _G, _D, Gs = misc.load_pkl(self._network_pkl)
             self._evaluate(Gs, Gs_kwargs=Gs_kwargs, num_gpus=num_gpus)
             self._report_progress(1, 1)
-        self._eval_time = time.time() - time_begin # pylint: disable=attribute-defined-outside-init
+        self._eval_time = time.time() - time_begin  # pylint: disable=attribute-defined-outside-init
 
         if log_results:
             if run_dir is not None:
@@ -92,7 +112,7 @@ class MetricBase:
             tflib.autosummary.autosummary('Metrics/' + self.name + res.suffix, res.value)
 
     def _evaluate(self, Gs, Gs_kwargs, num_gpus):
-        raise NotImplementedError # to be overridden by subclasses
+        raise NotImplementedError  # to be overridden by subclasses
 
     def _report_result(self, value, suffix='', fmt='%-10.4f'):
         self._results += [dnnlib.EasyDict(value=value, suffix=suffix, fmt=fmt)]
@@ -101,7 +121,11 @@ class MetricBase:
         if self._progress_lo is None or self._progress_hi is None or self._progress_max is None:
             return
         t = time.time()
-        if self._progress_sec is not None and self._progress_time is not None and t < self._progress_time + self._progress_sec:
+        if (
+            self._progress_sec is not None
+            and self._progress_time is not None
+            and t < self._progress_time + self._progress_sec
+        ):
             return
         self._progress_time = t
         val = self._progress_lo + (pcur / pmax) * (self._progress_hi - self._progress_lo)
@@ -133,14 +157,18 @@ class MetricBase:
         while True:
             latents = np.random.randn(minibatch_size, *Gs.input_shape[1:])
             fmt = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)
-            images = Gs.run(latents, None, output_transform=fmt, is_validation=True, num_gpus=num_gpus, assume_frozen=True)
+            images = Gs.run(
+                latents, None, output_transform=fmt, is_validation=True, num_gpus=num_gpus, assume_frozen=True
+            )
             yield images
 
     def _get_random_labels_tf(self, minibatch_size):
         return self._get_dataset_obj().get_random_labels_tf(minibatch_size)
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 # Group of multiple metrics.
+
 
 class MetricGroup:
     def __init__(self, metric_kwarg_list):
@@ -157,12 +185,15 @@ class MetricGroup:
         for metric in self.metrics:
             metric.update_autosummaries()
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 # Dummy metric for debugging purposes.
+
 
 class DummyMetric(MetricBase):
     def _evaluate(self, Gs, Gs_kwargs, num_gpus):
         _ = Gs, Gs_kwargs, num_gpus
         self._report_result(0.0)
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

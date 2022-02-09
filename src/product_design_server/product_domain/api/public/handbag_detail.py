@@ -1,5 +1,6 @@
 from product_domain.models import HandbagDetail
 
+
 def get_or_create_handbag_detail(name, url, description, meta, product):
     """
     External Interface for HandbagDetail.get_or_create()
@@ -14,6 +15,7 @@ def get_or_create_handbag_detail(name, url, description, meta, product):
         'product_id': handbag_detail.product_id,
         'type': handbag_detail.type,
     }
+
 
 def get_handbag_details(id):
     """

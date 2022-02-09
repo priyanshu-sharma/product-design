@@ -3,6 +3,7 @@ from sqlalchemy import Column, JSON, String, Integer, Enum
 from extensions.models import AutoTimestampedModel, UserTrackingModel
 from enums import ProductType
 
+
 class Product(AutoTimestampedModel, UserTrackingModel, Base):
     __tablename__ = "pd_product"
 

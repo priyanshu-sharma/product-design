@@ -4,7 +4,8 @@ from lib.stylegan2.dnnlib import tflib
 from server_config import generator_pickle
 import numpy as np
 
-class Generator():
+
+class Generator:
     def __init__(self):
         self._G, self._D, self.Gs = pretrained_networks.load_networks(generator_pickle['handbags'])
         self.Gs_kwargs = dnnlib.EasyDict()

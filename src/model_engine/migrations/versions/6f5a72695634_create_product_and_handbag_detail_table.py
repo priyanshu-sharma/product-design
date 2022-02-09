@@ -43,11 +43,10 @@ def upgrade():
         sa.Column('description', sa.String(), nullable=True),
         sa.Column('meta', sa.JSON()),
         sa.Column('product_id', sa.Integer(), nullable=False),
-        sa.Column('type', postgresql.ENUM('HANDBAGS', 'WATCHES', 'JEWELLERY', name='type', create_type=False), nullable=False),
-        sa.ForeignKeyConstraint(
-            ['product_id'],
-            ['pd_product.id'],
+        sa.Column(
+            'type', postgresql.ENUM('HANDBAGS', 'WATCHES', 'JEWELLERY', name='type', create_type=False), nullable=False
         ),
+        sa.ForeignKeyConstraint(['product_id'], ['pd_product.id'],),
         sa.PrimaryKeyConstraint('id'),
     )
 

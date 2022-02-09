@@ -2,10 +2,12 @@ from django.db import models
 from extensions.models import AutoTimestampedModel, UserTrackingModel
 from product_domain.enums import ProductType
 
+
 class Product(AutoTimestampedModel, UserTrackingModel):
     """
     Product model.
     """
+
     name = models.CharField(max_length=255)
     type = models.TextField(choices=ProductType.choices(), default=ProductType.CLOTHING)
     meta = models.JSONField(default=dict)

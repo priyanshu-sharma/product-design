@@ -2,7 +2,6 @@ from celery import Celery
 from server_config import celery_config
 
 
-
 app = Celery()
 app.conf.broker_url = celery_config["broker_url"]
 

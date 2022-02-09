@@ -2,6 +2,7 @@ from redis import Redis
 from extensions import chunkify, Singleton
 from storage_backend.base import BaseStorageBackend
 
+
 class RedisStore(BaseStorageBackend, metaclass=Singleton):
     def __init__(self, url, default_batchsize=1000):
         super().__init__()
