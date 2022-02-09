@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 @router.post(
-    "/operations",
-    tags=["Operations API"],
-    summary="[API] - Operations",
+    "/interpolations",
+    tags=["Interpolations API"],
+    summary="[API] - Interpolations",
     description="""
         Return {
             "status": "success",
@@ -23,14 +23,15 @@ router = APIRouter()
     """
 )
 async def operations(request: Request):
+    from layers import InterpolationLayer
     try:
         request_data = await request.json()
         product_type = request_data.get("product_type", None)
         schema = PRODUCT_TYPE_TO_SCHEMA_MAP[product_type]()
         schema_data = schema.load(request_data)
-        print(schema.load(request_data))
-        result = {'schema_data': schema_data}
-        return {"status": "success", "result": result}
+        interpolation_type = schema_data.get("interpolation_type", None)
+        interpolation_result = InterpolationLayer().transform(interpolation_type)
+        return {"status": "success", "result": interpolation_result}
     except Exception as e:
         logger.error("Error in Operations API: {}".format(e))
         raise BadRequestException(e)

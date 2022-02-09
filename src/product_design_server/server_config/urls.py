@@ -27,6 +27,6 @@ schema_view = get_swagger_view(title='Product Design Server API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     url("^health_check$", health_check_view),
-    url('^docs/', schema_view),
+    url('^docs', schema_view),
     url("^api/product_domain/v1/", include((product_domain_urls, 'product_domain'), namespace='v1_product_domain')),
 ]

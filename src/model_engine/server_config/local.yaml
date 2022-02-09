@@ -7,3 +7,15 @@ database:
     name: product_design
     host: localhost
     port: 5432
+pickle_models:
+    generator:
+        handbags: /content/generator_model.pkl
+generator:
+    image_map_dimensions: 10
+    results_size: 256
+media:
+    images:
+        handbags: media/images/handbags/
+    output_gifs:
+        handbags: media/output_gifs/handbags/
+fps: 16
