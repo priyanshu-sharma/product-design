@@ -22,7 +22,4 @@ except ImportError:
 celery_config = config["celery"]
 storage_config = config["storage"]
 database = config["database"]
-generator_pickle = config['pickle_models']['generator']
-generator = config['generator']
-media = config['media']
-fps = config['fps']
+handbags_config = config['handbags']
