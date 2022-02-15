@@ -15,7 +15,6 @@ class NetworkException(APIException):
     pass
 
 
-
 class ResourceNotFoundException(NotFound):
     pass
 

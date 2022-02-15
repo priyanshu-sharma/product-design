@@ -1,5 +1,6 @@
 from product_domain.models import Product
 
+
 def get_or_create_product(name, type, meta, description):
     """
     External Interface for Product.get_or_create()

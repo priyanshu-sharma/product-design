@@ -3,6 +3,7 @@ from sqlalchemy import Column, JSON, String, Integer, ForeignKey, Enum
 from extensions.models import AutoTimestampedModel, UserTrackingModel
 from enums import AccessoriesType
 
+
 class HandbagDetail(AutoTimestampedModel, UserTrackingModel, Base):
     __tablename__ = "pd_handbag_detail"
 

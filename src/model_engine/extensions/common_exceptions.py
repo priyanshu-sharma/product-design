@@ -32,10 +32,7 @@ async def NetworkExceptionHandler(request: Request, exception: NetworkException)
 
 
 async def ResourceConflictExceptionHandler(request: Request, exception: ResourceConflictException):
-    return JSONResponse(
-        status_code=409,
-        content={"message": "Record already exists. " + str(exception.message)},
-    )
+    return JSONResponse(status_code=409, content={"message": "Record already exists. " + str(exception.message)},)
 
 
 async def ResourceNotFoundExceptionHandler(request: Request, exception: ResourceNotFoundException):
@@ -43,10 +40,7 @@ async def ResourceNotFoundExceptionHandler(request: Request, exception: Resource
 
 
 async def BadRequestExceptionHandler(request: Request, exception: BadRequestException):
-    return JSONResponse(
-        status_code=400,
-        content={"message": "Invalid Input - " + str(exception.message)},
-    )
+    return JSONResponse(status_code=400, content={"message": "Invalid Input - " + str(exception.message)},)
 
 
 async def ParseExceptionHandler(request: Request, exception: ParseException):

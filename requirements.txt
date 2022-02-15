@@ -1,11 +1,17 @@
 alembic==1.7.5
+black==19.10b0
+dlib==19.22.0
 fastapi==0.73.0
 ipython==7.29.0
 jedi==0.18.1
 marshmallow==3.14.1
+numpy==1.20.3
+Pillow==8.4.0
+pre-commit==2.17.0
 psycopg2==2.9.3
 python-json-logger==2.0.2
 redis==4.1.2
 requests==2.27.1
 SQLAlchemy==1.4.27
+tqdm==4.62.3
 uvicorn==0.17.1

@@ -1,2 +1,4 @@
 from api.actions.product_type_to_schema_map import PRODUCT_TYPE_TO_SCHEMA_MAP
-from api.actions.operation import router as operations_router
+from api.actions.interpolations import router as interpolation_router
+from api.actions.generate_images import router as generate_images_router
+from api.actions.accessories_type_to_config_map import ACCESSORIES_TYPE_TO_CONFIG_MAP

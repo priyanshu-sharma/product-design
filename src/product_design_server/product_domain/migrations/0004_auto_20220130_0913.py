@@ -10,25 +10,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveIndex(
-            model_name='handbagdetail',
-            name='pd_handbag__name_fe8748_idx',
-        ),
-        migrations.AddField(
-            model_name='handbagdetail',
-            name='type',
-            field=models.TextField(default='HANDBAGS'),
-        ),
-        migrations.AlterUniqueTogether(
-            name='handbagdetail',
-            unique_together={('name', 'type')},
-        ),
+        migrations.RemoveIndex(model_name='handbagdetail', name='pd_handbag__name_fe8748_idx',),
+        migrations.AddField(model_name='handbagdetail', name='type', field=models.TextField(default='HANDBAGS'),),
+        migrations.AlterUniqueTogether(name='handbagdetail', unique_together={('name', 'type')},),
         migrations.AddIndex(
-            model_name='handbagdetail',
-            index=models.Index(fields=['name', 'type'], name='pd_handbag__name_97b834_idx'),
+            model_name='handbagdetail', index=models.Index(fields=['name', 'type'], name='pd_handbag__name_97b834_idx'),
         ),
-        migrations.RemoveField(
-            model_name='handbagdetail',
-            name='product_type',
-        ),
+        migrations.RemoveField(model_name='handbagdetail', name='product_type',),
     ]

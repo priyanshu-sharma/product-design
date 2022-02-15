@@ -22,3 +22,4 @@ except ImportError:
 celery_config = config["celery"]
 storage_config = config["storage"]
 database = config["database"]
+handbags_config = config['handbags']

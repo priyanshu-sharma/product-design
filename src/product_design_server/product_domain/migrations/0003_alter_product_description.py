@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='product',
-            name='description',
-            field=models.TextField(null=True),
-        ),
+        migrations.AlterField(model_name='product', name='description', field=models.TextField(null=True),),
     ]

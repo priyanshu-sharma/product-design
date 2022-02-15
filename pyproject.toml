@@ -16,5 +16,7 @@ exclude = '''
   | ve
   | venv
   | src\model_engine\migrations\versions
+  | src\model_engine\product_domain\migrations
+  | src\model_engine\dataset_domain\migrations
 )/
 '''
