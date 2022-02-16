@@ -279,3 +279,43 @@ bifrost/static/
 # config
 config/*.yaml
 config/*.json
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# production
+build
+
+# OSX
+.DS_Store
+
+# Env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cypress directories
+cypress/videos
+cypress/screenshots
+cypress/snapshots/*/headed
+__diff__
+
+# Editors
+.idea
+.vscode
+
+# Test reports
+reports
+junit.xml
