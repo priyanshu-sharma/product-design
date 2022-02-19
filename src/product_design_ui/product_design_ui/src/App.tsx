@@ -2,6 +2,14 @@ import React from "react";
 import { Spin } from "antd";
 import DashboardPage from "./pages/DashboardPage";
 
+declare global {
+  interface Window {
+    MODEL_ENGINE_API_URL: string;
+  }
+}
+
+window.MODEL_ENGINE_API_URL = window.MODEL_ENGINE_API_URL || "";
+
 const App: React.FC = () => {
   const [isLoading, setIsLoading]: any = React.useState(true);
 

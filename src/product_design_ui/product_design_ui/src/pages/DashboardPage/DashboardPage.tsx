@@ -1,13 +1,14 @@
 import React from "react";
 import "antd/dist/antd.css";
 import "./dashboard-page.css";
-import { Layout, Menu, Breadcrumb, PageHeader } from "antd";
+import { Layout, Menu, Breadcrumb, PageHeader, Button } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+import { getImages } from "../../services/api/model-engine";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,6 +18,11 @@ const DashboardPage: React.FC = () => {
 
   const onCollapse = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleApply = async () => {
+    console.log("Inside Apply");
+    await getImages();
   };
 
   return (
@@ -48,12 +54,23 @@ const DashboardPage: React.FC = () => {
         <Layout className="site-layout">
           <Content style={{ margin: "0 16px" }}>
             <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>Handbags</Breadcrumb.Item>
-              <Breadcrumb.Item>Dataset</Breadcrumb.Item>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <div style={{ left: 220, position: "absolute" }}>
+                  <Breadcrumb.Item>Handbags</Breadcrumb.Item>
+                </div>
+                <div style={{ right: 15, position: "absolute" }}>
+                  <Button onClick={handleApply}>Generate Images</Button>
+                </div>
+              </div>
             </Breadcrumb>
             <div
               className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
+              style={{ padding: 30, minHeight: 360 }}
             >
               Hello World
             </div>
