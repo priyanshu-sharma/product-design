@@ -24,12 +24,14 @@ router = APIRouter()
     """,
 )
 async def generate_images(request: Request):
-    from layers import interpolation_layer
+    from layers import InterpolationLayer
 
     try:
         request_data = await request.json()
         product_type = request_data.get("product_type", None)
+        interpolation_layer = InterpolationLayer()
         result = interpolation_layer.refresh(product_type)
+        result = interpolation_layer.transform(product_type)
         return {"status": "success", "result": result}
     except Exception as e:
         logger.error("Error in Operations API: {}".format(e))

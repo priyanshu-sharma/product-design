@@ -4,8 +4,6 @@ from tqdm import tqdm
 import numpy as np
 from PIL import Image
 from extensions.utils import get_concat_h
-from random import randrange
-
 
 class InterpolationLayer(BaseLayer):
     NAME = "interpolation"
@@ -96,6 +94,8 @@ class InterpolationLayer(BaseLayer):
         return self.make_latent_interp_animation(interpolation_dict, interpolation_type)
 
     def _fetch_config(self, config):
+        from components import handbag_generator_registry
+        self.generator = handbag_generator_registry.handbag_generator
         self.image_map_dimensions = config['generator']['image_map_dimensions']
         self.results_size = config['generator']['results_size']
         self.generated_images_path = config['media']['images']
@@ -108,7 +108,8 @@ class InterpolationLayer(BaseLayer):
         config = ACCESSORIES_TYPE_TO_CONFIG_MAP[product_type]
         self._fetch_config(config)
         self.generator_manager = GeneratorManager(
-            self.image_map_dimensions, self.results_size, self.generated_images_path
+            self.generator, self.image_map_dimensions, self.results_size, self.generated_images_path
         )
-        self.generator = self.generator
-        return {"status": "done"}
+        image_latent_vectors_df = self.generator_manager.load_model()
+        return {"status": "done", "data": image_latent_vectors_df}
+    

@@ -1,14 +1,14 @@
 import pandas as pd
 from random import randrange
 from PIL import Image
-from components import Generator
+from components import handbag_generator_registry
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 
 class GeneratorManager:
-    def __init__(self, image_map_dimensions, results_size, generated_images_path):
-        self.generator = Generator()
+    def __init__(self, image_map_dimensions, results_size, generated_images_path, generator):
+        self.generator = generator
         self.image_map_dimensions = image_map_dimensions
         self.results_size = results_size
         self.image_map_data = None
@@ -23,6 +23,7 @@ class GeneratorManager:
 
         self.image_map_data = pd.DataFrame(image_map_data)
         Image.fromarray(image[0]).resize((self.results_size, self.results_size))
+        return self.image_map_data
 
     def plot_image_map(self):
         fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
@@ -52,10 +53,10 @@ class GeneratorManager:
             pad_inches=0,
         )
 
-    def load(self):
-        self.generate_image_random()
-        self.plot_image_map()
-        return self.image_map_data
+    def load_model(self):
+        return self.generate_image_random()
+        # self.plot_image_map()
+        # return self.image_map_data
 
     def generate_image_from_z(self, z):
         images = self.generator.generate_image_from_z(z)
