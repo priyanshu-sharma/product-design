@@ -20,17 +20,13 @@ class HandbagDetail(ProductDetail):
         ]
 
     @staticmethod
-    def get_or_create(name, url, description, meta, product):
+    def create(name, url, description, meta, product):
         """
-        Get or create a product detail.
+        Create a product detail.
         """
-        try:
-            handbag_detail = HandbagDetail.objects.get(name=name, product=product)
-        except HandbagDetail.DoesNotExist:
-            handbag_detail = HandbagDetail.objects.create(
-                name=name, url=url, description=description, meta=meta, product=product
-            )
-            handbag_detail.save()
+        handbag_detail = HandbagDetail.objects.create(
+            name=name, url=url, description=description, meta=meta, product=product
+        )
         return handbag_detail
 
     @staticmethod
@@ -43,3 +39,10 @@ class HandbagDetail(ProductDetail):
             return handbag_detail
         except HandbagDetail.DoesNotExist:
             raise ResourceNotFoundException()
+    
+    @staticmethod
+    def disable_older_handbag_details():
+        """
+        Disable older handbag details.
+        """
+        return HandbagDetail.objects.filter(active=False).update(active=False)

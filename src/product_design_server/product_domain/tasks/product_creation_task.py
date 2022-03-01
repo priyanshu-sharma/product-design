@@ -14,7 +14,7 @@ def product_creation_task(serialized_data):
     product_details = serialized_data.get("product_details", [])
     handbag_detail_list = []
     for product_detail in product_details:
-        handbag_detail_dict = handbag_detail_api.get_or_create_handbag_detail(
+        handbag_detail_dict = handbag_detail_api.create_handbag_detail(
             name=product_detail.get("name"),
             url=product_detail.get("url"),
             description=product_detail.get("description"),

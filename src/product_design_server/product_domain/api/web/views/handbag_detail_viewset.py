@@ -31,6 +31,8 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
+        from product_domain.api.public import handbag_detail_api
+        handbag_detail_api.disable_handbag_details()
         product_creation_serializer = ProductCreationSerializer(data=request.data)
         product_creation_serializer.is_valid(raise_exception=True)
         serialized_data = product_creation_serializer.validated_data

@@ -14,6 +14,7 @@ class ProductDetail(AutoTimestampedModel, UserTrackingModel):
     description = models.TextField(null=True)
     meta = models.JSONField(default=dict)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
