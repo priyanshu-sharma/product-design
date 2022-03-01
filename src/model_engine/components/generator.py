@@ -1,6 +1,6 @@
-from lib.stylegan2 import pretrained_networks
-from lib.stylegan2 import dnnlib
-from lib.stylegan2.dnnlib import tflib
+from stylegan2 import pretrained_networks
+from stylegan2 import dnnlib
+from stylegan2.dnnlib import tflib
 from server_config import generator_pickle
 import numpy as np
 
