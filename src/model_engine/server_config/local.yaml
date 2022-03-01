@@ -9,7 +9,7 @@ database:
     port: 5432
 handbags:
     generator:
-        pickle_models: /content/generator_model.pkl
+        pickle_models: /content/product-design/src/model_engine/media/handbag/models/generator_model.pkl
         image_map_dimensions: 10
         fps: 16
         num_interps: 10
