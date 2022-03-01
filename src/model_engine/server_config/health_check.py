@@ -1,7 +1,6 @@
 import logging
 from fastapi import APIRouter
 from starlette.responses import PlainTextResponse
-from storage_backend import registry as storage_registry
 from starlette.responses import Response
 
 logger = logging.getLogger(__name__)
@@ -37,6 +36,7 @@ async def liveness():
     response_class=PlainTextResponse,
 )
 async def readiness():
+    from storage_backend import registry as storage_registry
     try:
         storage_registry.redis.client.ping()
     except Exception as e:
