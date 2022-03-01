@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env
 .venv
 env/
 venv/
@@ -208,7 +208,7 @@ coverage.xml
 # Django stuff:
 *.log
 .static_storage/
-.media/
+# .media/
 local_settings.py
 
 # Flask stuff:
@@ -238,7 +238,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+# .env
 
 # virtualenv
 .venv

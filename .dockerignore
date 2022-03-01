@@ -52,7 +52,7 @@ build_kubernetes
 .venv*/
 
 # Configuration
-.env
+# .env
 .credentials
 config/*.json
 config/*.yaml
