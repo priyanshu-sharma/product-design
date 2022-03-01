@@ -1,4 +1,4 @@
-# from storage_backend import registry as storage_registry
+from storage_backend import registry as storage_registry
 from layers.base import BaseLayer
 from tqdm import tqdm
 import numpy as np
@@ -9,14 +9,14 @@ from random import randrange
 
 class InterpolationLayer(BaseLayer):
     NAME = "interpolation"
-    PREFIX = "i"
+    PREFIX = "ip"
 
     SUPPORTED_STORAGE_BACKENDS = ["redis"]
 
     def __init__(self):
         super().__init__()
-        # self.redis_store = storage_registry.redis
-        # self.layer_prefixes = self.redis_store.add_layer(self.NAME, self.PREFIX)
+        self.redis_store = storage_registry.redis
+        self.layer_prefixes = self.redis_store.add_layer(self.NAME, self.PREFIX)
         self.image_map_dimensions = None
         self.results_size = None
         self.output_gifs_path = None
