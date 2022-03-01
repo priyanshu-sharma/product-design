@@ -1,11 +1,11 @@
 from product_domain.models import HandbagDetail
 
 
-def get_or_create_handbag_detail(name, url, description, meta, product):
+def create_handbag_detail(name, url, description, meta, product):
     """
-    External Interface for HandbagDetail.get_or_create()
+    External Interface for HandbagDetail.create()
     """
-    handbag_detail = HandbagDetail.get_or_create(name, url, description, meta, product)
+    handbag_detail = HandbagDetail.create(name, url, description, meta, product)
     return {
         'id': handbag_detail.id,
         'name': handbag_detail.name,
@@ -14,6 +14,7 @@ def get_or_create_handbag_detail(name, url, description, meta, product):
         'description': handbag_detail.description,
         'product_id': handbag_detail.product_id,
         'type': handbag_detail.type,
+        'active': handbag_detail.active,
     }
 
 
@@ -30,4 +31,14 @@ def get_handbag_details(id):
         'type': handbag_detail.type,
         'product_name': handbag_detail.product.name,
         'product_type': handbag_detail.product.type,
+    }
+
+
+def disable_handbag_details():
+    """
+    External Interface for HandbagDetail.disable_older_handbag_details()
+    """
+    HandbagDetail.disable_older_handbag_details()
+    return {
+        'message': 'Handbag details disabled successfully.'
     }

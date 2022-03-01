@@ -1,5 +1,6 @@
+from xmlrpc.client import Boolean
 from server_config.database import Base
-from sqlalchemy import Column, JSON, String, Integer, ForeignKey, Enum
+from sqlalchemy import Column, JSON, String, Integer, ForeignKey, Enum, Boolean
 from extensions.models import AutoTimestampedModel, UserTrackingModel
 from enums import AccessoriesType
 
@@ -14,3 +15,4 @@ class HandbagDetail(AutoTimestampedModel, UserTrackingModel, Base):
     meta = Column(JSON, default={})
     product_id = Column(Integer, ForeignKey("pd_product.id"))
     type = Column(Enum(AccessoriesType), default=AccessoriesType.HANDBAGS)
+    active = Column(Boolean, default=True)
