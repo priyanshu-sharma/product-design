@@ -15,6 +15,6 @@ handbags:
         num_interps: 10
         results_size: 256
     media:
-        images: media/images/handbags/
+        images: /content/product-design/src/model_engine/media/handbag/images
         output_gifs: media/output_gifs/handbags/
         

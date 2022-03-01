@@ -1,4 +1,4 @@
-from storage_backend import registry as storage_registry
+# from storage_backend import registry as storage_registry
 
 
 class BaseLayer:
@@ -8,8 +8,9 @@ class BaseLayer:
     SUPPORTED_STORAGE_BACKENDS = ["redis"]
 
     def __init__(self):
-        self.redis_store = storage_registry.redis
-        self.redis_store.add_layer(self.NAME, self.PREFIX)
+        pass
+        # self.redis_store = storage_registry.redis
+        # self.redis_store.add_layer(self.NAME, self.PREFIX)
 
     def update(self, *args, **kwargs):
         _update = getattr(self, f"_update_{self.SUPPORTED_STORAGE_BACKENDS}")

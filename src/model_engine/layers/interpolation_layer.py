@@ -1,5 +1,5 @@
-from storage_backend import registry as storage_registry
-from layers import BaseLayer
+# from storage_backend import registry as storage_registry
+from layers.base import BaseLayer
 from tqdm import tqdm
 import numpy as np
 from PIL import Image
@@ -15,19 +15,17 @@ class InterpolationLayer(BaseLayer):
 
     def __init__(self):
         super().__init__()
-        self.redis_store = storage_registry.redis
-        self.layer_prefixes = self.redis_store.add_layer(self.NAME, self.PREFIX)
-        (
-            self.image_map_dimensions,
-            self.results_size,
-            self.output_gifs_path,
-            self.results_size,
-            self.fps,
-            self.image_map_data,
-            self.generator,
-            self.generator_manager,
-            self.num_interps,
-        ) = None
+        # self.redis_store = storage_registry.redis
+        # self.layer_prefixes = self.redis_store.add_layer(self.NAME, self.PREFIX)
+        self.image_map_dimensions = None
+        self.results_size = None
+        self.output_gifs_path = None
+        self.results_size = None
+        self.fps = None
+        self.image_map_data = None
+        self.generator = None
+        self.generator_manager = None
+        self.num_interps = None
         self.proportion_list_1 = [0.15, 0.15, 0.35, 0.35]
         self.proportion_list_2 = [0.25, 0.25, 0.25, 0.25]
 
@@ -99,7 +97,7 @@ class InterpolationLayer(BaseLayer):
         self.image_map_dimensions = config['generator']['image_map_dimensions']
         self.results_size = config['generator']['results_size']
         self.generated_images_path = config['media']['images']
-        self.output_gifs_path = config['media']['output_gifs']
+        # self.output_gifs_path = config['media']['output_gifs']
 
     def refresh(self, product_type):
         from components import GeneratorManager
@@ -110,5 +108,4 @@ class InterpolationLayer(BaseLayer):
         self.generator_manager = GeneratorManager(
             self.image_map_dimensions, self.results_size, self.generated_images_path
         )
-        self.generator = self.generator
-        return {"status": "done"}
+        return self.generator_manager.load()

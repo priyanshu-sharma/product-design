@@ -1,3 +1,6 @@
+import sys
+sys.path.append('lib/stylegan2/')
+
 from lib.stylegan2 import pretrained_networks
 from lib.stylegan2 import dnnlib
 from lib.stylegan2.dnnlib import tflib
@@ -7,12 +10,11 @@ import numpy as np
 
 class Generator:
     def __init__(self):
-        self._G, self._D, self.Gs = pretrained_networks.load_networks(handbags_config['handbags']['generator']['pickle_models'])
+        self._G, self._D, self.Gs = pretrained_networks.load_networks(handbags_config['generator']['pickle_models'])
         self.Gs_kwargs = dnnlib.EasyDict()
         self.noise_vars = [var for name, var in self.Gs.components.synthesis.vars.items() if name.startswith('noise')]
         self.Gs_kwargs.output_transform = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)
         self.Gs_kwargs.randomize_noise = False
-        return self.Gs, self.noise_vars, self.Gs_kwargs
 
     # Generate images given a random seed (Integer)
     def generate_image_random(self, rand_seed):

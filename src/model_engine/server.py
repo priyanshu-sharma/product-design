@@ -3,9 +3,6 @@ import logging.config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import sys
-sys.path.append('lib/stylegan2/')
-
 from api import api_router
 from extensions import (
     NetworkException,
