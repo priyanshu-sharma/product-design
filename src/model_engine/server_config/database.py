@@ -5,7 +5,7 @@ from contextlib import contextmanager
 
 from server_config import database
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{database['host']}:{database['port']}/{database['name']}"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{database['user']}:{database['password']}@{database['host']}:{database['port']}/{database['name']}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_size=10, max_overflow=10)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

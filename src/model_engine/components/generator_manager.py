@@ -4,6 +4,7 @@ from PIL import Image
 from components import Generator
 import matplotlib.pyplot as plt
 from datetime import datetime
+from services import registry as service_registry
 
 
 class GeneratorManager:
@@ -15,14 +16,13 @@ class GeneratorManager:
         self.generated_images_path = generated_images_path
 
     def generate_image_random(self):
-        image_map_data = []
+        self.image_map_data = []
         image_map_dimensions = self.image_map_dimensions * self.image_map_dimensions
         for i in range(image_map_dimensions):
             image, latent_code = self.generator.generate_image_random(randrange(1000))
-            image_map_data.append({'id': 'pos_' + str(i), 'image': image, 'latent_vector': latent_code, 'name': "image_{}".format(i)})
+            self.image_map_data.append({'id': 'pos_' + str(i), 'image': image, 'latent_vector': latent_code, 'name': "image_{}_{}".format(datetime.now(), i)})
 
-        self.image_map_data = pd.DataFrame(image_map_data)
-        Image.fromarray(image[0]).resize((self.results_size, self.results_size))
+        # Image.fromarray(image[0]).resize((self.results_size, self.results_size))
 
     # def plot_image_map(self):
     #     fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
@@ -66,8 +66,24 @@ class GeneratorManager:
 
     def load(self):
         self.generate_image_random()
-        self.plot_image_map()
-        return self.image_map_data
+        # self.plot_image_map()
+        payload = {
+            'product_type': 'ACCESSORIES',
+            'product_name': 'Handbags',
+            'product_meta': {},
+        }
+        product_detail_list = []
+        for image_data in self.image_map_data:
+            product_payload = {
+                'name': image_data['name'],
+                'type': 'HANDBAGS',
+                'url': '/content/product-design/src/model_engine/media/handbag/images/{}'.format(image_data['name']),
+                'meta': image_data['latent_vector'].tolist()
+            }
+            product_detail_list.append(product_payload)
+        payload['product_details'] = product_detail_list
+        product_design_service = service_registry.product_design_client
+        return product_design_service.create_handbag_details(payload)
 
     def generate_image_from_z(self, z):
         images = self.generator.generate_image_from_z(z)

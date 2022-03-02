@@ -31,7 +31,7 @@ async def generate_images(request: Request):
         product_type = request_data.get("product_type", None)
         interpolation_layer = InterpolationLayer()
         result = interpolation_layer.refresh(product_type)
-        return {"status": "success", "result": str(result)}
+        return {"status": "success", "result": result}
     except Exception as e:
         logger.error("Error in Operations API: {}".format(e))
         raise BadRequestException(e)

@@ -45,4 +45,8 @@ class HandbagDetail(ProductDetail):
         """
         Disable older handbag details.
         """
-        return HandbagDetail.objects.filter(active=False).update(active=False)
+        handbag_details = HandbagDetail.objects.filter(active=True)
+        for handbag_detail in handbag_details:
+            handbag_detail.active = False
+            handbag_detail.save()
+        return handbag_details

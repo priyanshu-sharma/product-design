@@ -23,14 +23,26 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
     pagination_class = StandardPagination
 
     def list(self, request, *args, **kwargs):
-        response = super().list(request, args, kwargs)
-        handbag_details = dict(response.data).get("results", [])
-        for handbag_detail in handbag_details:
-            populate_redis_task.delay(handbag_detail['id'])
-        return response
+        from server_config import RedisClient
+        import pickle
+        redis_client = RedisClient().get_instance()
+        image_keys_list = [key for key in redis_client.scan_iter("ip_*")]
+        if len(image_keys_list) == 100:
+            handbag_detail_list = []
+            for images_key in image_keys_list:
+                pickled_handbag_detail = redis_client.get(images_key)
+                handbag_detail = pickle.loads(pickled_handbag_detail)
+                handbag_detail_list.append(handbag_detail)
+            return Response(handbag_detail_list, status=status.HTTP_201_CREATED)
+        else:
+            print("Here")
+            response = super().list(request, args, kwargs)
+            handbag_details = dict(response.data).get("results", [])
+            populate_redis_task.delay(handbag_details)
+            return response
 
     @transaction.atomic
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
         from product_domain.api.public import handbag_detail_api
         handbag_detail_api.disable_handbag_details()
         product_creation_serializer = ProductCreationSerializer(data=request.data)
