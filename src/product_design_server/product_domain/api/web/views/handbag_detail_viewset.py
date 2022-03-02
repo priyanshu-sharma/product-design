@@ -33,8 +33,9 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
                 pickled_handbag_detail = redis_client.get(images_key)
                 handbag_detail = pickle.loads(pickled_handbag_detail)
                 handbag_detail_list.append(handbag_detail)
-            return handbag_detail_list
+            return Response(handbag_detail_list, status=status.HTTP_201_CREATED)
         else:
+            print("Here")
             response = super().list(request, args, kwargs)
             handbag_details = dict(response.data).get("results", [])
             populate_redis_task.delay(handbag_details)

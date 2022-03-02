@@ -15,6 +15,8 @@ from requests.adapters import HTTPAdapter
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_TIMEOUT_SECONDS = 120
+
 
 class BaseService(object):
     def __init__(self, host, headers, is_logging_enabled=False):
@@ -27,7 +29,7 @@ class BaseService(object):
         self.session.headers.update({"content-type": "application/json"})
         if headers:
             self.session.headers.update(headers)
-        self.session.mount(self.BASE_URL, HTTPAdapter(max_retries=retries))
+        self.session.mount(self.host, HTTPAdapter(max_retries=retries))
 
     def get_data_from_client_response(self, response, method):
         if method == 'HEAD':
@@ -67,7 +69,7 @@ class BaseService(object):
         params=None,
         headers=None,
         auth=None,
-        timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS,
+        timeout_seconds=DEFAULT_TIMEOUT_SECONDS,
     ):
         request_url = self.host + relative_url.lstrip('/')
         try:
@@ -86,13 +88,13 @@ class BaseService(object):
         return self.get_data_from_client_response(response, method)
 
     def head(
-        self, relative_url, params=None, headers=None, auth=None, timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS
+        self, relative_url, params=None, headers=None, auth=None, timeout_seconds=DEFAULT_TIMEOUT_SECONDS
     ):
         return self.request(
             'HEAD', relative_url, data=None, params=params, headers=headers, timeout_seconds=timeout_seconds, auth=auth
         )
 
-    def get(self, relative_url, params=None, headers=None, auth=None, timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS):
+    def get(self, relative_url, params=None, headers=None, auth=None, timeout_seconds=DEFAULT_TIMEOUT_SECONDS):
         return self.request(
             'GET', relative_url, data=None, params=params, headers=headers, timeout_seconds=timeout_seconds, auth=auth
         )
@@ -104,7 +106,7 @@ class BaseService(object):
         params=None,
         headers=None,
         auth=None,
-        timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS,
+        timeout_seconds=DEFAULT_TIMEOUT_SECONDS,
     ):
         return self.request(
             'POST', relative_url, data=data, params=params, headers=headers, auth=auth, timeout_seconds=timeout_seconds
@@ -117,7 +119,7 @@ class BaseService(object):
         params=None,
         headers=None,
         auth=None,
-        timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS,
+        timeout_seconds=DEFAULT_TIMEOUT_SECONDS,
     ):
         return self.request(
             'PUT', relative_url, data=data, params=params, headers=headers, auth=auth, timeout_seconds=timeout_seconds
@@ -130,14 +132,14 @@ class BaseService(object):
         params=None,
         headers=None,
         auth=None,
-        timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS,
+        timeout_seconds=DEFAULT_TIMEOUT_SECONDS,
     ):
         return self.request(
             'PATCH', relative_url, data=data, params=params, headers=headers, auth=auth, timeout_seconds=timeout_seconds
         )
 
     def delete(
-        self, relative_url, params=None, headers=None, auth=None, timeout_seconds=settings.DEFAULT_TIMEOUT_SECONDS
+        self, relative_url, params=None, headers=None, auth=None, timeout_seconds=DEFAULT_TIMEOUT_SECONDS
     ):
         return self.request(
             'DELETE',

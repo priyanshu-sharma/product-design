@@ -7,6 +7,8 @@ database:
     name: product_design
     host: localhost
     port: 5432
+    user: pd_admin
+    password: password
 handbags:
     generator:
         pickle_models: /content/product-design/src/model_engine/media/handbag/models/generator_model.pkl

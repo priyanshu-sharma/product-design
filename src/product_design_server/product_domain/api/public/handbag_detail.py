@@ -38,7 +38,8 @@ def disable_handbag_details():
     """
     External Interface for HandbagDetail.disable_older_handbag_details()
     """
-    HandbagDetail.disable_older_handbag_details()
+    handbag_details = HandbagDetail.disable_older_handbag_details()
     return {
-        'message': 'Handbag details disabled successfully.'
+        'message': 'Handbag details disabled successfully',
+        'result': handbag_details
     }
