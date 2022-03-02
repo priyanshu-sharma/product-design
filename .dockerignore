@@ -56,3 +56,7 @@ build_kubernetes
 .credentials
 config/*.json
 config/*.yaml
+
+**/node_modules
+**/build
+**/reports

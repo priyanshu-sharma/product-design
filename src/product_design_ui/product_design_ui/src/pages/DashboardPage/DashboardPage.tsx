@@ -76,7 +76,7 @@ const DashboardPage: React.FC = () => {
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            Product Design ©2022 Created by Priyanshu Sharma
+            Product Design ©2022 Created by Product Design Team
           </Footer>
         </Layout>
       </Layout>
