@@ -1,0 +1,2 @@
+export const MODEL_ENGINE_API_URL =
+  process.env.REACT_APP_MODEL_ENGINE_API_URL || window.MODEL_ENGINE_API_URL;
