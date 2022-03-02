@@ -17,4 +17,5 @@ handbags:
     media:
         images: /content/product-design/src/model_engine/media/handbag/images
         output_gifs: media/output_gifs/handbags/
-        
+product_design:
+    host: http://127.0.0.1:8000

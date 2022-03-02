@@ -10,15 +10,24 @@ from extensions import (
     ParseException,
 )
 from server_config import settings
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
 logger = logging.getLogger(__name__)
 
 
 class BaseService(object):
-    def __init__(self, host, is_logging_enabled=False):
+    def __init__(self, host, headers, is_logging_enabled=False):
+        super(BaseService, self).__init__()
+        retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[500])
         self.host = host.rstrip('/')
         self.host += '/'
         self.is_logging_enabled = is_logging_enabled
+        self.session = requests.Session()
+        self.session.headers.update({"content-type": "application/json"})
+        if headers:
+            self.session.headers.update(headers)
+        self.session.mount(self.BASE_URL, HTTPAdapter(max_retries=retries))
 
     def get_data_from_client_response(self, response, method):
         if method == 'HEAD':

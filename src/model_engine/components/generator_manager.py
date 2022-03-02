@@ -4,6 +4,7 @@ from PIL import Image
 from components import Generator
 import matplotlib.pyplot as plt
 from datetime import datetime
+from services import registry as service_registry
 
 
 class GeneratorManager:
@@ -67,7 +68,10 @@ class GeneratorManager:
     def load(self):
         self.generate_image_random()
         self.plot_image_map()
-        return self.image_map_data
+        data = self.image_map_data.to_json(orient ='records')
+        print(data)
+        product_design_service = service_registry.product_design_client
+        return product_design_service.create_handbag_details(data)
 
     def generate_image_from_z(self, z):
         images = self.generator.generate_image_from_z(z)
