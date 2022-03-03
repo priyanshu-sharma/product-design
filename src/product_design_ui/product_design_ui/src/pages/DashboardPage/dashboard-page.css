@@ -13,9 +13,96 @@
 }
 
 .site-page-header {
-    background: #141414;
+  background: #141414;
 }
 
 .dashboard-page-button {
   padding-right: 10;
+}
+
+.image-gallery {
+  overflow: scroll;
+  min-height: 360px;
+  max-height: 360px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.image-holder {
+  margin: 1px;
+}
+
+.image-holder:hover {
+  margin: 0px;
+  border: 1px solid orange;
+}
+
+.work-sheet {
+  min-height: 360px;
+  max-height: 360px;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+}
+
+.work-sheet-segment {
+  min-height: 96px;
+  max-height: 96px;
+  min-width: 96px;
+  max-width: 96px;
+}
+
+.work-sheet-td {
+  min-height: 96px;
+  max-height: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  margin: 0;
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+table td {
+  padding: 15px;
+}
+table thead td {
+  background-color: #54585d;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 13px;
+  border: 1px solid #54585d;
+  text-align: center;
+}
+table tbody th {
+  background-color: #54585d;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 13px;
+  border: 1px solid #54585d;
+  text-align: center;
+}
+table tbody td {
+  color: #636363;
+  border: 1px solid #dddfe1;
+  margin: 0;
+  padding: 0;
+}
+table tbody tr {
+  background-color: #f9fafb;
+}
+table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+table tbody td .active {
+  color: #636363;
+  margin: 0;
+  background-color: #636363;
+  padding: 2px;
 }
