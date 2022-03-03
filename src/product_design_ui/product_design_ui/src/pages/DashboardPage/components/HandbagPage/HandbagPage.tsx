@@ -1,5 +1,5 @@
 import ImageGallery from './ImageGallery';
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import WorkSheet from './WorkSheet';
 import {useState} from 'react';
 import JsonData from './images.json';
