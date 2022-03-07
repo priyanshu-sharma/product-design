@@ -71,7 +71,7 @@ const DashboardPage: React.FC = () => {
             </Breadcrumb>
             <div
               className="site-layout-background"
-              style={{ padding: 30, minHeight: 480 }}
+              style={{ padding: 30, minHeight: 840 }}
             >
               <HandbagPage />
             </div>
