@@ -1,6 +1,7 @@
 import React from "react";
 import { Spin } from "antd";
 import DashboardPage from "./pages/DashboardPage";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 declare global {
   interface Window {
@@ -46,7 +47,6 @@ const App: React.FC = () => {
               }}
             >
               <DashboardPage></DashboardPage>
-              <h1>Hello World</h1>
             </div>
           </div>
         </div>
