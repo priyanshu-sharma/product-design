@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_filters',
     'rest_framework_swagger',
+    'corsheaders',
     # application modules
     'product_domain',
     'dataset_domain',
@@ -58,7 +59,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'server_config.urls'
 

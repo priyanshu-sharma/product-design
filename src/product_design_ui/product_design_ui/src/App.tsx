@@ -1,20 +1,25 @@
 import React from "react";
 import { Spin } from "antd";
 import DashboardPage from "./pages/DashboardPage";
+import { generateImages } from "./services/api/model-engine";
 
 declare global {
   interface Window {
     MODEL_ENGINE_API_URL: string;
+    PRODUCT_SERVER_API_URL: string;
   }
 }
 
-window.MODEL_ENGINE_API_URL = window.MODEL_ENGINE_API_URL || "";
+window.MODEL_ENGINE_API_URL = window.MODEL_ENGINE_API_URL;
+window.PRODUCT_SERVER_API_URL = window.PRODUCT_SERVER_API_URL;
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading]: any = React.useState(true);
 
   const loadStoreData = async () => {
     console.log("Inside Load Data");
+    const response = await generateImages();
+    console.log(response);
     setIsLoading(false);
   };
 

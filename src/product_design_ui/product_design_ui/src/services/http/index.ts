@@ -12,7 +12,7 @@ const _throwBadResponseError = async (response: Response) => {
       const response = await fetch(`${host}${path}`, {
         method: "GET",
         headers: {
-          ...headers,
+          "Content-Type": "application/json",
         },
       });
   

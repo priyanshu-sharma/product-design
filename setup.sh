@@ -12,7 +12,7 @@ sudo apt-get install rabbitmq-server
 
 # Postgres Setup
 sudo apt-get install postgresql postgresql-contrib
-echo 'listen_addresses = "*"' >> /etc/postgresql/10/main/postgresql.conf
+# echo 'listen_addresses = "*"' >> /etc/postgresql/10/main/postgresql.conf
 sudo service postgresql start
 sudo -u postgres createdb product_design
 # sudo service postgresql start
