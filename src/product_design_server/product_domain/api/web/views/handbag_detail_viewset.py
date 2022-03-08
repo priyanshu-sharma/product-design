@@ -14,7 +14,7 @@ from product_domain.tasks import product_creation_task, populate_redis_task
 
 
 class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = HandbagDetail.objects.select_related("product").all()
+    queryset = HandbagDetail.objects.filter(active=True)
     serializer_class = HandbagDetailSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
     filter_class = HandbagDetailFilter
@@ -33,16 +33,13 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
             for images_key in image_keys_list:
                 pickled_handbag_detail = redis_client.get(images_key)
                 handbag_detail = pickle.loads(pickled_handbag_detail)
-                handbag_detail_list.append(
-                    {
-                        handbag_detail['name']: handbag_detail
-                    }
-                )
+                handbag_detail_list.append(handbag_detail)
         else:
             print("Fetching from Database")
             response = super().list(request, args, kwargs)
             handbag_details = dict(response.data).get("results", [])
             populate_redis_task.delay(handbag_details)
+            handbag_detail_list = handbag_details
         return Response(handbag_detail_list, status=status.HTTP_201_CREATED)
 
     @transaction.atomic

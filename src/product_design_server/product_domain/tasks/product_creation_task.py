@@ -34,7 +34,7 @@ def database_refesh(serialized_data):
 
 
 @app.task(
-    autoretry_for=(Exception,), retry_backoff=True, acks_late=True, queue="product_creation_queue",
+    autoretry_for=(Exception,), retry_backoff=True, acks_late=True,
 )
 def product_creation_task(serialized_data):
     with transaction.atomic():

@@ -27,10 +27,11 @@ def get_handbag_details(id):
         'id': handbag_detail.id,
         'name': handbag_detail.name,
         'url': handbag_detail.url,
+        'meta': handbag_detail.meta,
+        'description': handbag_detail.description,
         'product_id': handbag_detail.product_id,
         'type': handbag_detail.type,
-        'product_name': handbag_detail.product.name,
-        'product_type': handbag_detail.product.type,
+        'active': handbag_detail.active,
     }
 
 

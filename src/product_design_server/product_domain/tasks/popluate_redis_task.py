@@ -4,7 +4,7 @@ from server_config import RedisClient
 
 
 @app.task(
-    autoretry_for=(Exception,), retry_backoff=True, acks_late=True, queue="populate_redis_queue",
+    autoretry_for=(Exception,), retry_backoff=True, acks_late=True,
 )
 def populate_redis_task(handbag_details):
     import pickle

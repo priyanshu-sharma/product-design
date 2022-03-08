@@ -15,10 +15,11 @@ sudo apt-get install postgresql postgresql-contrib
 echo 'listen_addresses = "*"' >> /etc/postgresql/10/main/postgresql.conf
 sudo service postgresql start
 sudo -u postgres createdb product_design
+# sudo service postgresql start
 # sudo -u postgres psql
 # create user pd_admin with encrypted password 'password';
 # grant all privileges on database product_design to pd_admin;
 
 
-bash src/model_engine/entrypoint.sh
+# bash src/model_engine/entrypoint.sh
 # bash src/product_design_server/entrypoint.sh
