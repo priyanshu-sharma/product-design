@@ -26,20 +26,24 @@ class HandbagDetailViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, vie
         from server_config import RedisClient
         import pickle
         redis_client = RedisClient().get_instance()
+        handbag_detail_list = []
         image_keys_list = [key for key in redis_client.scan_iter("ip_*")]
         if len(image_keys_list) == 100:
-            handbag_detail_list = []
+            print("Fetching from Redis")
             for images_key in image_keys_list:
                 pickled_handbag_detail = redis_client.get(images_key)
                 handbag_detail = pickle.loads(pickled_handbag_detail)
-                handbag_detail_list.append(handbag_detail)
-            return Response(handbag_detail_list, status=status.HTTP_201_CREATED)
+                handbag_detail_list.append(
+                    {
+                        handbag_detail['name']: handbag_detail
+                    }
+                )
         else:
-            print("Here")
+            print("Fetching from Database")
             response = super().list(request, args, kwargs)
             handbag_details = dict(response.data).get("results", [])
             populate_redis_task.delay(handbag_details)
-            return response
+        return Response(handbag_detail_list, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def create(self, request):
