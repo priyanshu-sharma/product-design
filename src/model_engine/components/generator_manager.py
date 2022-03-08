@@ -5,6 +5,7 @@ from components import Generator
 import matplotlib.pyplot as plt
 from datetime import datetime
 from services import registry as service_registry
+import pandas as pd
 
 
 class GeneratorManager:
@@ -52,23 +53,23 @@ class GeneratorManager:
     #         pad_inches=0,
     #     )
 
-    # def plot_image_map(self):
-    #     fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
-    #     for i in range(0, len(self.image_map_data)):
-    #         fig, ax = plt.subplots()
-    #         ax.imshow(Image.fromarray(self.image_map_data['image'][i][0]).resize((self.results_size, self.results_size)), interpolation='nearest')
-    #         ax.set_xticklabels([])
-    #         ax.axes.get_xaxis().set_visible(False)
-    #         ax.set_yticklabels([])
-    #         ax.axes.get_yaxis().set_visible(False)
-    #         # plt.show()
-    #         plt.savefig(self.generated_images_path + '/{}.png'.format(self.image_map_data['name'][i]),bbox_inches = 'tight',pad_inches=0)
+    def plot_image_map(self, new_image_map):
+        fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
+        for i in range(0, len(new_image_map)):
+            fig, ax = plt.subplots()
+            ax.imshow(Image.fromarray(new_image_map['image'][i][0]).resize((self.results_size, self.results_size)), interpolation='nearest')
+            ax.set_xticklabels([])
+            ax.axes.get_xaxis().set_visible(False)
+            ax.set_yticklabels([])
+            ax.axes.get_yaxis().set_visible(False)
+            # plt.show()
+            plt.savefig(self.generated_images_path + '/{}.png'.format(new_image_map['name'][i]),bbox_inches = 'tight',pad_inches=0)
+            plt.close()
 
     def load(self):
-        from async_celery import plot_image_map
         self.generate_image_random()
-        # self.plot_image_map()
-        plot_image_map.delay(self.image_map_dimensions, self.image_map_data, self.results_size, self.generated_images_path)
+        new_image_map = pd.DataFrame(self.image_map_data)
+        self.plot_image_map(new_image_map)
         payload = {
             'product_type': 'ACCESSORIES',
             'product_name': 'Handbags',

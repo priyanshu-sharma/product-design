@@ -1,1 +1,0 @@
-from async_celery.tasks.plot_image_map import plot_image_map
