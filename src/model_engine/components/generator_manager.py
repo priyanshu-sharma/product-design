@@ -52,21 +52,23 @@ class GeneratorManager:
     #         pad_inches=0,
     #     )
 
-    def plot_image_map(self):
-        fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
-        for i in range(0, len(self.image_map_data)):
-            fig, ax = plt.subplots()
-            ax.imshow(Image.fromarray(self.image_map_data['image'][i][0]).resize((self.results_size, self.results_size)), interpolation='nearest')
-            ax.set_xticklabels([])
-            ax.axes.get_xaxis().set_visible(False)
-            ax.set_yticklabels([])
-            ax.axes.get_yaxis().set_visible(False)
-            # plt.show()
-            plt.savefig(self.generated_images_path + '/{}.png'.format(self.image_map_data['name'][i]),bbox_inches = 'tight',pad_inches=0)
+    # def plot_image_map(self):
+    #     fig = plt.figure(figsize=(self.image_map_dimensions * 4.6, self.image_map_dimensions * 4.6))
+    #     for i in range(0, len(self.image_map_data)):
+    #         fig, ax = plt.subplots()
+    #         ax.imshow(Image.fromarray(self.image_map_data['image'][i][0]).resize((self.results_size, self.results_size)), interpolation='nearest')
+    #         ax.set_xticklabels([])
+    #         ax.axes.get_xaxis().set_visible(False)
+    #         ax.set_yticklabels([])
+    #         ax.axes.get_yaxis().set_visible(False)
+    #         # plt.show()
+    #         plt.savefig(self.generated_images_path + '/{}.png'.format(self.image_map_data['name'][i]),bbox_inches = 'tight',pad_inches=0)
 
     def load(self):
+        from async_celery import plot_image_map
         self.generate_image_random()
         # self.plot_image_map()
+        plot_image_map.delay(self.image_map_dimensions, self.image_map_data, self.results_size, self.generated_images_path)
         payload = {
             'product_type': 'ACCESSORIES',
             'product_name': 'Handbags',
