@@ -1,5 +1,5 @@
 import React from "react";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import "./dashboard-page.css";
 import { Layout, Menu, Breadcrumb, PageHeader, Button } from "antd";
 import {
