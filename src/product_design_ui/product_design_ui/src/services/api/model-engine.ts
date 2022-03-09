@@ -5,7 +5,8 @@ const GET = httpGet(MODEL_ENGINE_API_URL);
 const POST = httpPost(MODEL_ENGINE_API_URL);
 const PUT = httpPut(MODEL_ENGINE_API_URL);
 
-
-export const getImages = () => {
-  return GET("/api/v1/generate_images/", {});
+export const generateImages = () => {
+  return POST("/api/v1/generate_images", {
+    product_type: "HANDBAGS",
+  });
 };

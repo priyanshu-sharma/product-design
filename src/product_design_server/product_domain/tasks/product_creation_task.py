@@ -1,6 +1,7 @@
 from product_domain.api.public import product_api, handbag_detail_api
 from server_config.celery import app
 import pickle
+from django.db import transaction
 
 def redis_refresh(handbag_detail_list):
     from server_config import RedisClient
@@ -33,9 +34,10 @@ def database_refesh(serialized_data):
 
 
 @app.task(
-    autoretry_for=(Exception,), retry_backoff=True, acks_late=True, queue="product_creation_queue",
+    autoretry_for=(Exception,), retry_backoff=True, acks_late=True,
 )
 def product_creation_task(serialized_data):
-    handbag_detail_list = database_refesh(serialized_data)
-    redis_response = redis_refresh(handbag_detail_list)
-    return redis_response
+    with transaction.atomic():
+        handbag_detail_list = database_refesh(serialized_data)
+        redis_response = redis_refresh(handbag_detail_list)
+        return redis_response

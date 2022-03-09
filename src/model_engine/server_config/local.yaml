@@ -2,7 +2,7 @@ storage:
     redis: redis://localhost:6379/0
     cache: redis://localhost:6379/0
 celery:
-    broker_url: redis://localhost:6379/0
+    broker_url: amqp://guest:guest@localhost:5672//
 database:
     name: product_design
     host: localhost

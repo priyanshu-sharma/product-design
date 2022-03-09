@@ -8,7 +8,7 @@ import {
   FileOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { getImages } from "../../services/api/model-engine";
+import { getImages } from "../../services/api/product-server";
 import HandbagPage from "./components/HandbagPage";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -23,7 +23,8 @@ const DashboardPage: React.FC = () => {
 
   const handleApply = async () => {
     console.log("Inside Apply");
-    await getImages();
+    const response = await getImages();
+    console.log(response[0]);
   };
 
   return (
