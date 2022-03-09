@@ -2,7 +2,7 @@
 
 # Redis Setup
 sudo apt-get update
-sudo apt-get install redis-server nano vim pgcli
+sudo apt-get install redis-server nano vim pgcli curl
 echo 'supervised systemd' >> /etc/redis/redis.conf
 # redis-server
 
@@ -23,3 +23,4 @@ sudo -u postgres createdb product_design
 
 # bash src/model_engine/entrypoint.sh
 # bash src/product_design_server/entrypoint.sh
+# bash src/product_design_ui/entrypoint.sh
