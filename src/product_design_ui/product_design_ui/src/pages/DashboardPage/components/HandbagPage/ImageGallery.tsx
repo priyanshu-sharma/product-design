@@ -5,7 +5,6 @@ import ImageHolder from './ImageHolder';
 interface image {
   id: string;
   path: string;
-  latent_vector: number[][];
 }
 
 

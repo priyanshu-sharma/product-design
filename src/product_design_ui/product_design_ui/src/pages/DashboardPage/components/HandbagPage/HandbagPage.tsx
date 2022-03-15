@@ -1,11 +1,22 @@
 import ImageGallery from './ImageGallery';
-// import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import WorkSheet from './WorkSheet';
 import {useState} from 'react';
 import JsonData from './images.json';
 
-const HandbagPage = ({}) => {
-  const [galleryImages, setgalleryImages] = useState(JsonData);
+interface Image {
+  id: string;
+  path: string;
+}
+
+interface Props {
+  images: Image[];
+}
+
+
+const HandbagPage = ({images}: Props) => {
+  // const [galleryImages, setgalleryImages] = useState(JsonData);
+  
   const [workSheetActive,setworkSheetActive] = useState("A1");
   const [exprBar,setexprBar] = useState("");
 
@@ -79,7 +90,7 @@ const HandbagPage = ({}) => {
     <>
       <div className='row work-space'>
         <div className='col-6 image-gallery'>
-          <ImageGallery images={galleryImages} addImageToWorkSheetActive={addImageToWorkSheetActive}/>
+          <ImageGallery images={images} addImageToWorkSheetActive={addImageToWorkSheetActive}/>
         </div>
         <div className='col-6'>
           <WorkSheet workSheetActive={workSheetActive} workSheet={workSheet} changeWorkSheetActive={changeWorkSheetActive}/>

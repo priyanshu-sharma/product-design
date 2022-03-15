@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { getImages } from "../../services/api/product-server";
 import HandbagPage from "./components/HandbagPage";
+import {useState} from 'react';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -21,10 +22,35 @@ const DashboardPage: React.FC = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  const [response, setResponse]:any = useState([])
+
+  const getImpVariables = (
+    responseImage: {
+      active: boolean;
+      description: string;
+      id: number;
+      meta: number[][];
+      name: string;
+      product_id: number;
+      type: string;
+      url:string;
+    }[]
+  ) => {
+    let imageArray = [];
+    for (const image of responseImage) {
+      imageArray.push({
+        id: image.id,
+        path: image.url,
+      });
+    };
+    return imageArray;
+  }
+
   const handleApply = async () => {
     console.log("Inside Apply");
-    const response = await getImages();
+    const response = getImpVariables(await getImages());
     console.log(response[0]);
+    setResponse(response);
   };
 
   return (
@@ -74,7 +100,7 @@ const DashboardPage: React.FC = () => {
               className="site-layout-background"
               style={{ padding: 30, minHeight: 480 }}
             >
-              <HandbagPage />
+              <HandbagPage images={response}/>
             </div>
           </Content>]
         </Layout>
