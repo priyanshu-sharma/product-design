@@ -40,7 +40,7 @@ const DashboardPage: React.FC = () => {
     for (const image of responseImage) {
       imageArray.push({
         id: image.id,
-        path: image.url,
+        path: image.url.substring(70),
       });
     };
     return imageArray;
