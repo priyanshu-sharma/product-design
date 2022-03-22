@@ -17,7 +17,7 @@ handbags:
         num_interps: 10
         results_size: 256
     media:
-        images: /content/product-design/src/model_engine/media/handbag/images
-        output_gifs: media/output_gifs/handbags/
+        images: /content/product-design/src/product_design_ui/product_design_ui/public/handbag
+        output_gifs: /content/product-design/src/product_design_ui/product_design_ui/public/output
 product_design:
     host: http://127.0.0.1:8000
