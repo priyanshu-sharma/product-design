@@ -1,7 +1,6 @@
 interface image {
   id: string;
   path: string;
-  latent_vector: number[][];
 }
 
 interface Props {

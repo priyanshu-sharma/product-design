@@ -80,7 +80,7 @@ class GeneratorManager:
             product_payload = {
                 'name': image_data['name'],
                 'type': 'HANDBAGS',
-                'url': '/content/product-design/src/model_engine/media/handbag/images/{}'.format(image_data['name']),
+                'url': '/content/product-design/src/product_design_ui/product_design_ui/public/handbag/{}.png'.format(image_data['name']),
                 'meta': image_data['latent_vector'].tolist()
             }
             product_detail_list.append(product_payload)
