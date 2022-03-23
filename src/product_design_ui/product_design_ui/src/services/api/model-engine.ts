@@ -10,3 +10,7 @@ export const generateImages = () => {
     product_type: "HANDBAGS",
   });
 };
+
+export const interpolate = (payload: any) => {
+  return POST("/api/v1/interpolations", payload);
+};
