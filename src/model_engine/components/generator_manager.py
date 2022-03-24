@@ -95,11 +95,7 @@ class GeneratorManager:
     def get_interpolated_vector(self, latent_vectors, proportions):
         return sum([vector * proportion for vector, proportion in zip(latent_vectors, proportions)])
 
-    def get_image_and_associated_latent_code(self, proportion_list):
-        vector_list = [
-            self.image_map_data['latent_vector'][randrange(self.image_map_dimensions * self.image_map_dimensions)]
-            for i in range(4)
-        ]
+    def get_image_and_associated_latent_code(self, proportion_list, vector_list):
         latent_code = self.get_interpolated_vector(vector_list, proportion_list)
         image = Image.fromarray(self.generate_image_from_z(latent_code)[0]).resize(
             (self.results_size, self.results_size)

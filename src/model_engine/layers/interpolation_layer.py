@@ -4,6 +4,7 @@ from tqdm import tqdm
 import numpy as np
 from PIL import Image
 from extensions.utils import get_concat_h
+import pickle
 
 
 class InterpolationLayer(BaseLayer):
@@ -77,13 +78,16 @@ class InterpolationLayer(BaseLayer):
             frame = get_concat_h(frame, image_2)
             all_imgs.append(frame)
 
-        save_name = '{}/latent_space_traversal.gif'.format(self.output_gifs_path)
+        save_name = '/content/product-design/src/product_design_ui/product_design_ui/public/handbag/latent_space_traversal.gif'
         all_imgs[0].save(save_name, save_all=True, append_images=all_imgs[1:], duration=1000 / self.fps, loop=0)
         return save_name
 
-    def transform(self, interpolation_type):
-        image_1, latent_code_1 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_1)
-        image_2, latent_code_2 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_2)
+    def transform(self, interpolation_type, images):
+        result_list = []
+        for image in images:
+            result_list.append(pickle.loads(self.redis_store.client.get('ip_{}'.format(image))))
+        image_1, latent_code_1 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_1, result_list[0]['meta'])
+        image_2, latent_code_2 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_2, result_list[1]['meta'])
         interpolation_dict = {
             'image_1': image_1,
             'latent_code_1': latent_code_1,
