@@ -2,3 +2,5 @@ from components.generator import Generator
 from components.generator_manager import GeneratorManager
 from components.interpolation_manager import InterpolationManager
 from components.interpolation_type_to_manager_map import INTERPOLATION_TYPE_TO_MANAGER_MAP
+
+generator_manager_registry = GeneratorManager()

@@ -1,3 +1,4 @@
+from importlib.metadata import metadata
 import pandas as pd
 from random import randrange
 from PIL import Image
@@ -6,15 +7,16 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from services import registry as service_registry
 import pandas as pd
+from extensions import Singleton
 
 
-class GeneratorManager:
+class GeneratorManager(metaclass=Singleton):
     def __init__(self, image_map_dimensions, results_size, generated_images_path):
         self.generator = Generator()
-        self.image_map_dimensions = image_map_dimensions
-        self.results_size = results_size
+        self.image_map_dimensions = 10
+        self.results_size = 256
         self.image_map_data = None
-        self.generated_images_path = generated_images_path
+        self.generated_images_path = '/content/product-design/src/product_design_ui/product_design_ui/public/handbag'
 
     def generate_image_random(self):
         self.image_map_data = []

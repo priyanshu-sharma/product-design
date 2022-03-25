@@ -83,11 +83,12 @@ class InterpolationLayer(BaseLayer):
         return save_name
 
     def transform(self, interpolation_type, images):
+        from components import generator_manager_registry
         result_list = []
         for image in images:
             result_list.append(pickle.loads(self.redis_store.client.get('ip_{}'.format(image))))
-        image_1, latent_code_1 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_1, result_list[0]['meta'])
-        image_2, latent_code_2 = self.generator_manager.get_image_and_associated_latent_code(self.proportion_list_2, result_list[1]['meta'])
+        image_1, latent_code_1 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_1, result_list[0]['meta'])
+        image_2, latent_code_2 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_2, result_list[1]['meta'])
         interpolation_dict = {
             'image_1': image_1,
             'latent_code_1': latent_code_1,
@@ -104,11 +105,10 @@ class InterpolationLayer(BaseLayer):
 
     def refresh(self, product_type):
         from components import GeneratorManager
-        from api.actions import ACCESSORIES_TYPE_TO_CONFIG_MAP
+        # from api.actions import ACCESSORIES_TYPE_TO_CONFIG_MAP
 
-        config = ACCESSORIES_TYPE_TO_CONFIG_MAP[product_type]
-        self._fetch_config(config)
-        self.generator_manager = GeneratorManager(
-            self.image_map_dimensions, self.results_size, self.generated_images_path
-        )
+        # config = ACCESSORIES_TYPE_TO_CONFIG_MAP[product_type]
+        # self._fetch_config(config)
+        from components import generator_manager_registry
+        self.generator_manager = generator_manager_registry
         return self.generator_manager.load()
