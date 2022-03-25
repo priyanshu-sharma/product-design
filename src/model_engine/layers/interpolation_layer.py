@@ -84,11 +84,11 @@ class InterpolationLayer(BaseLayer):
 
     def transform(self, interpolation_type, images):
         from components import generator_manager_registry
-        result_list = []
-        for image in images:
-            result_list.append(pickle.loads(self.redis_store.client.get('ip_{}'.format(image))))
-        image_1, latent_code_1 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_1, result_list[0]['meta'])
-        image_2, latent_code_2 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_2, result_list[1]['meta'])
+        # result_list = []
+        # for image in images:
+        #     result_list.append(pickle.loads(self.redis_store.client.get('ip_{}'.format(image))))
+        image_1, latent_code_1 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_1)
+        image_2, latent_code_2 = generator_manager_registry.get_image_and_associated_latent_code(self.proportion_list_2)
         interpolation_dict = {
             'image_1': image_1,
             'latent_code_1': latent_code_1,

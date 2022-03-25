@@ -1,4 +1,3 @@
-from importlib.metadata import metadata
 import pandas as pd
 from random import randrange
 from PIL import Image
@@ -11,7 +10,7 @@ from extensions import Singleton
 
 
 class GeneratorManager(metaclass=Singleton):
-    def __init__(self, image_map_dimensions, results_size, generated_images_path):
+    def __init__(self):
         self.generator = Generator()
         self.image_map_dimensions = 10
         self.results_size = 256
@@ -24,7 +23,8 @@ class GeneratorManager(metaclass=Singleton):
         for i in range(image_map_dimensions):
             image, latent_code = self.generator.generate_image_random(randrange(1000))
             self.image_map_data.append({'id': 'pos_' + str(i), 'image': image, 'latent_vector': latent_code, 'name': "image_{}_{}".format(datetime.now(), i)})
-
+            image_map_data = pd.DataFrame(self.image_map_data)
+            image_map_data.to_csv('/content/product-design/src/product_design_ui/product_design_ui/public/image_map.csv')
         # Image.fromarray(image[0]).resize((self.results_size, self.results_size))
 
     # def plot_image_map(self):
@@ -97,7 +97,9 @@ class GeneratorManager(metaclass=Singleton):
     def get_interpolated_vector(self, latent_vectors, proportions):
         return sum([vector * proportion for vector, proportion in zip(latent_vectors, proportions)])
 
-    def get_image_and_associated_latent_code(self, proportion_list, vector_list):
+    def get_image_and_associated_latent_code(self, proportion_list):
+        image_map_data = pd.read_csv('/content/product-design/src/product_design_ui/product_design_ui/public/image_map.csv')
+        vector_list = [image_map_data['latent_vector'][randrange(self.image_map_dimensions*self.image_map_dimensions)] for i in range(4)]
         latent_code = self.get_interpolated_vector(vector_list, proportion_list)
         image = Image.fromarray(self.generate_image_from_z(latent_code)[0]).resize(
             (self.results_size, self.results_size)
