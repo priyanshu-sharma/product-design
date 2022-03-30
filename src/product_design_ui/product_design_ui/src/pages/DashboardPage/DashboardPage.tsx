@@ -26,18 +26,14 @@ const DashboardPage: React.FC = () => {
   const [response, setResponse]:any = useState([])
 
   const getImpVariables = (
-    // responseImage: {
-    //   active: boolean;
-    //   description: string;
-    //   id: number;
-    //   meta: number[][];
-    //   name: string;
-    //   product_id: number;
-    //   type: string;
-    //   url:string;
-    // }[]
     responseImage: {
-      id: string;
+      active: boolean;
+      description: string;
+      id: number;
+      meta: number[][];
+      name: string;
+      product_id: number;
+      type: string;
       url:string;
     }[]
   ) => {
