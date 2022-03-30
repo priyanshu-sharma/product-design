@@ -51,7 +51,6 @@ const App: React.FC = () => {
               }}
             >
               <DashboardPage></DashboardPage>
-              <h1>Hello World</h1>
             </div>
           </div>
         </div>

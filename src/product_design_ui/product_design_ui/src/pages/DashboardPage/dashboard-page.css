@@ -106,3 +106,77 @@ table tbody td .active {
   background-color: #636363;
   padding: 2px;
 }
+
+.interpolation-menu {
+  background-color: #54585d;
+  min-height: 360px;
+  max-height: max-content;
+  margin: 0;
+  padding: 0;
+}
+
+.interpolation-selector {
+  background-color: #474a4d;
+  min-height: 360px;
+  max-height: 360px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+}
+
+.interpolation-selector-form {
+  min-height: 180px;
+  max-height: 180px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.interpolation-selector-images {
+  background-color: #474a4d;
+  min-height: 180px;
+  max-height: 180px;
+}
+
+.work-sheet {
+  min-height: 360px;
+  max-height: 360px;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+}
+
+.interpolation-selector-table {
+  border-spacing: 5px;
+  border-collapse: separate;
+}
+
+.interpolation-result {
+  background-color: #212529;
+}
+
+.label-holder {
+  min-width: 100%;
+  min-height: 50px;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.label-active {
+  background-color: #303233;
+}
+
+.interpolation-selector-images {
+  overflow-x: scroll;
+}
