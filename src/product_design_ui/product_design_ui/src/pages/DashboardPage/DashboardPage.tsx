@@ -11,6 +11,7 @@ import {
 import { getImages } from "../../services/api/product-server";
 import HandbagPage from "./components/HandbagPage";
 import {useState} from 'react';
+import Navigation from "./Navigation";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -49,36 +50,14 @@ const DashboardPage: React.FC = () => {
   const handleApply = async () => {
     console.log("Inside Apply");
     const response = getImpVariables(await getImages());
-    console.log(response[0]);
+    console.log(response);
     setResponse(response);
   };
 
   return (
     <div>
-      <PageHeader
-        title="Product Design"
-        className="site-page-header"
-        avatar={{
-          src: "https://avatars1.githubusercontent.com/u/8186664?s=460&v=4",
-        }}
-      ></PageHeader>
+      <Navigation/>
       <Layout style={{ minHeight: "92vh" }}>
-        <Sider collapsible collapsed={isCollapsed} onCollapse={onCollapse}>
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
-              Handbags
-            </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              T-Shirts
-            </Menu.Item>
-            <Menu.Item key="3" icon={<FileOutlined />}>
-              Jeans
-            </Menu.Item>
-            <Menu.Item key="4" icon={<TeamOutlined />}>
-              Jewellary
-            </Menu.Item>
-          </Menu>
-        </Sider>
         <Layout className="site-layout">
           <Content style={{ margin: "0 16px" }}>
             <Breadcrumb style={{ margin: "16px 0" }}>
@@ -102,7 +81,7 @@ const DashboardPage: React.FC = () => {
             >
               <HandbagPage images={response}/>
             </div>
-          </Content>]
+          </Content>
         </Layout>
       </Layout>
     </div>
